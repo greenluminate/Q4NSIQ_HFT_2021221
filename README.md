@@ -1,0 +1,2 @@
+# Q4NSIQ_HFT_2021221
+OE NIK HFT Feleves feladat
