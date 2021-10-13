@@ -8,20 +8,35 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Models
 {
-    class Movie
+    public class Movie
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MovieId { get; set; }
 
+        [Required]
+        public string MovieTitle { get; set; }
+
         public string Category { get; set; }
 
+        public int? AgeRestriction { get; set; }
+
         [Required]
-        public string Language { get; set; }
+        public string Languages { get; set; }
 
         [Required]
         public TimeSpan Duration { get; set; }
 
-        public int Rating { get; set; }
+        [RegularExpression("^NULL$|^[1-5]{1}$")]
+        public int? Rating { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Showtime> Showtimes { get; set; }
+
+        public Movie()
+        {
+            Showtimes = new HashSet<Showtime>();
+        }
+
     }
 }

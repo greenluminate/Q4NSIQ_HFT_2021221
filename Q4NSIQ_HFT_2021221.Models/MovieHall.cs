@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Models
 {
-    class MovieHall
+    public class MovieHall
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,5 +18,17 @@ namespace Q4NSIQ_HFT_2021221.Models
 
         [Required]
         public int NumberOfSeats { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Showtime> Showtimes { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Seats> Seats { get; set; }
+
+        public MovieHall()
+        {
+            Showtimes = new HashSet<Showtime>();
+            Seats = new HashSet<Seats>();
+        }
     }
 }

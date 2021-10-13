@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Models
 {
-    class Seats
+    public class Seats
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,9 +19,8 @@ namespace Q4NSIQ_HFT_2021221.Models
         [NotMapped]
         public virtual MovieHall MovieHall { get; set; }
 
-        [Required]
         [ForeignKey(nameof(MovieHall))]
-        public int MovieHallId { get; set; }
+        public int? MovieHallId { get; set; }
     }
 
 }
