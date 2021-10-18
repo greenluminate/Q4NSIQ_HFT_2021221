@@ -16,5 +16,36 @@ namespace Q4NSIQ_HFT_2021221.Repository
         {
             this.db = db;
         }
+
+        public void Create(MovieHall movieHall)
+        {
+            db.MovieHalls.Add(movieHall);
+            db.SaveChanges();
+        }
+
+        public MovieHall Read(int id)
+        {
+            return db.MovieHalls.FirstOrDefault(t => t.MovieHallId == id);
+        }
+
+        public IQueryable<MovieHall> ReadAll()
+        {
+            return db.MovieHalls;
+        }
+
+        public void Update(MovieHall movieHall)
+        {
+            var oldMovieHall = Read(movieHall.MovieHallId);
+            oldMovieHall.HallCategory = movieHall.HallCategory;
+            oldMovieHall.NumberOfSeats = movieHall.NumberOfSeats;
+
+            db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            db.Remove(Read(id));
+            db.SaveChanges();
+        }
     }
 }

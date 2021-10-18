@@ -16,5 +16,38 @@ namespace Q4NSIQ_HFT_2021221.Repository
         {
             this.db = db;
         }
+
+        public void Create(Staff staff)
+        {
+            db.Staffs.Add(staff);
+            db.SaveChanges();
+        }
+
+        public Staff Read(int id)
+        {
+            return db.Staffs.FirstOrDefault(t => t.StaffID == id);
+        }
+
+        public IQueryable<Staff> ReadAll()
+        {
+            return db.Staffs;
+        }
+
+        public void Update(Staff staff)
+        {
+            var oldStaff = Read(staff.StaffID);
+            oldStaff.Name = staff.Name;
+            oldStaff.Gender = staff.Gender;
+            oldStaff.IC = staff.IC;
+            oldStaff.MobileNumber = staff.MobileNumber;
+
+            db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            db.Remove(Read(id));
+            db.SaveChanges();
+        }
     }
 }
