@@ -25,7 +25,7 @@ namespace Q4NSIQ_HFT_2021221.Repository
 
         public Ticket Read(int id)
         {
-            return db.Tickets.FirstOrDefault(t => t.TicketID == id);
+            return db.Tickets.FirstOrDefault(t => t.TicketId == id);
         }
 
         public IQueryable<Ticket> ReadAll()
@@ -35,12 +35,12 @@ namespace Q4NSIQ_HFT_2021221.Repository
 
         public void Update(Ticket ticket)
         {
-            var oldTicket = Read(ticket.TicketID);
+            var oldTicket = Read(ticket.TicketId);
             oldTicket.PaymentMethod = ticket.PaymentMethod;
             oldTicket.Price = ticket.Price;
             oldTicket.ShowtimeId = ticket.ShowtimeId;
             oldTicket.StaffId = ticket.StaffId;
-            oldTicket.TicketID = ticket.TicketID;
+            oldTicket.TicketId = ticket.TicketId;
 
             db.SaveChanges();
         }

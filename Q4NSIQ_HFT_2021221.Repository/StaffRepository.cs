@@ -25,7 +25,7 @@ namespace Q4NSIQ_HFT_2021221.Repository
 
         public Staff Read(int id)
         {
-            return db.Staffs.FirstOrDefault(t => t.StaffID == id);
+            return db.Staffs.FirstOrDefault(t => t.StaffId == id);
         }
 
         public IQueryable<Staff> ReadAll()
@@ -35,7 +35,7 @@ namespace Q4NSIQ_HFT_2021221.Repository
 
         public void Update(Staff staff)
         {
-            var oldStaff = Read(staff.StaffID);
+            var oldStaff = Read(staff.StaffId);
             oldStaff.Name = staff.Name;
             oldStaff.Gender = staff.Gender;
             oldStaff.IC = staff.IC;

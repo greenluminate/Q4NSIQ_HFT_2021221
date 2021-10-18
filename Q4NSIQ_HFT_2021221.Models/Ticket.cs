@@ -12,7 +12,7 @@ namespace Q4NSIQ_HFT_2021221.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TicketID { get; set; }
+        public int TicketId { get; set; }
 
         public string PaymentMethod { get; set; }
 

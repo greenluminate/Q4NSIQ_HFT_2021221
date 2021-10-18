@@ -12,7 +12,7 @@ namespace Q4NSIQ_HFT_2021221.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int StaffID { get; set; }
+        public int StaffId { get; set; }
 
         [Required]
         public string Name { get; set; }
