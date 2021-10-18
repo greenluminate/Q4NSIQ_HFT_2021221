@@ -9,7 +9,6 @@ namespace Q4NSIQ_HFT_2021221.Client
         static void Main(string[] args)
         {
             CinemaDbContext databse = new CinemaDbContext();
-            //databse.SaveChanges();
             ;
         }
     }
