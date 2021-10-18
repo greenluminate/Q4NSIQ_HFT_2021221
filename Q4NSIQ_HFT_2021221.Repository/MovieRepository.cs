@@ -8,7 +8,7 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    class MovieRepository
+    class MovieRepository : IMovieRepository
     {
         CinemaDbContext db;
 
