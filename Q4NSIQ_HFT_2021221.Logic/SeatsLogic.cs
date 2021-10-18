@@ -1,4 +1,5 @@
-﻿using Q4NSIQ_HFT_2021221.Repository;
+﻿using Q4NSIQ_HFT_2021221.Models;
+using Q4NSIQ_HFT_2021221.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,36 @@ namespace Q4NSIQ_HFT_2021221.Logic
 {
     class SeatsLogic
     {
-        ISeatsRepository SeatsRepo;
+        ISeatsRepository seatsRepo;
 
-        public SeatsLogic(ISeatsRepository SeatsRepo)
+        public SeatsLogic(ISeatsRepository seatsRepo)
         {
-            this.SeatsRepo = SeatsRepo;
+            this.seatsRepo = seatsRepo;
+        }
+
+        public void Create(Seats Seats)
+        {
+            seatsRepo.Create(Seats);
+        }
+
+        public Seats Read(int id)
+        {
+            return seatsRepo.Read(id);
+        }
+
+        public IEnumerable<Seats> ReadAll()
+        {
+            return seatsRepo.ReadAll();
+        }
+
+        public void Update(Seats Seats)
+        {
+            seatsRepo.Update(Seats);
+        }
+
+        public void Delete(int id)
+        {
+            seatsRepo.Delete(id);
         }
     }
 }

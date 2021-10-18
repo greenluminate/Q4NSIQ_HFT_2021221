@@ -1,4 +1,5 @@
-﻿using Q4NSIQ_HFT_2021221.Repository;
+﻿using Q4NSIQ_HFT_2021221.Models;
+using Q4NSIQ_HFT_2021221.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,36 @@ namespace Q4NSIQ_HFT_2021221.Logic
 {
     class MovieHallLogic
     {
-        IMovieHallRepository MovieHallRepo;
+        IMovieHallRepository movieHallRepo;
 
-        public MovieHallLogic(IMovieHallRepository MovieHallRepo)
+        public MovieHallLogic(IMovieHallRepository movieHallRepo)
         {
-            this.MovieHallRepo = MovieHallRepo;
+            this.movieHallRepo = movieHallRepo;
+        }
+
+        public void Create(MovieHall movieHall)
+        {
+            movieHallRepo.Create(movieHall);
+        }
+
+        public MovieHall Read(int id)
+        {
+            return movieHallRepo.Read(id);
+        }
+
+        public IEnumerable<MovieHall> ReadAll()
+        {
+            return movieHallRepo.ReadAll();
+        }
+
+        public void Update(MovieHall MovieHall)
+        {
+            movieHallRepo.Update(MovieHall);
+        }
+
+        public void Delete(int id)
+        {
+            movieHallRepo.Delete(id);
         }
     }
 }
