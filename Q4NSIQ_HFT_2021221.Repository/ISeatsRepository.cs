@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    interface ISeatsRepository
+    public interface ISeatsRepository
     {
         void Create(Seats seats);
         void Delete(int id);

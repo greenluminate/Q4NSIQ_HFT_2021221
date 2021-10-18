@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    interface IMovieRepository
+    public interface IMovieRepository
     {
         void Create(Movie movie);
         void Delete(int id);
