@@ -32,7 +32,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("A programmer got stuck in the shower, because the instructions on the shampoo bottle said: Lather, Rinse, Repeat");
                 });
             });
         }

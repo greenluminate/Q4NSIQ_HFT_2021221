@@ -74,7 +74,7 @@ namespace Q4NSIQ_HFT_2021221.Data
             //Source: https://www.cinemacity.hu/cinemas/arena/1132?lang=en_GB#/buy-tickets-by-cinema?in-cinema=1132&at=2021-10-13&view-mode=list Downloaded: 2021.10.13.
 
             #region DbSeed
-            //Queue: Movie, MovieHall, Staff | Seats, Showtime, Ticket
+            //Order: Movie, MovieHall, Staff | Seats, Showtime, Ticket
             #region MoviePreData
             Movie movie1 = new Movie() { MovieId = 1, MovieTitle = "30 Days Left (30 Jours Max)", Category = "Action, Comedy, Crime", AgeRestriction = 16, Languages = "HU, EN", Duration = new TimeSpan(1, 27, 0), Rating = 4 };
             Movie movie2 = new Movie() { MovieId = 2, MovieTitle = "A Feleségem Története", Category = "Drama, Romance", AgeRestriction = 16, Languages = "HU", Duration = new TimeSpan(2, 49, 0), Rating = 1 };
@@ -261,6 +261,8 @@ namespace Q4NSIQ_HFT_2021221.Data
                 .HasData(ticket1, ticket2, ticket3, ticket4, ticket5, ticket6, ticket7, ticket8, ticket9, ticket10,
                          ticket11, ticket12, ticket13, ticket14, ticket15, ticket16, ticket17, ticket18, ticket19, ticket20);
             #endregion
+
+            
         }
     }
 }
