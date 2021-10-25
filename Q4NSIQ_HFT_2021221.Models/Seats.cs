@@ -16,11 +16,20 @@ namespace Q4NSIQ_HFT_2021221.Models
 
         public string SeatCategory { get; set; }
 
+        public int SeatNumber { get; set; }
+
         [NotMapped]
         public virtual MovieHall MovieHall { get; set; }
 
         [ForeignKey(nameof(MovieHall))]
         public int? MovieHallId { get; set; }
-    }
 
+        [NotMapped]
+        public virtual ICollection<Ticket> Tickets { get; set; }
+
+        public Seats()
+        {
+            Tickets = new HashSet<Ticket>();
+        }
+    }
 }

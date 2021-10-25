@@ -16,6 +16,13 @@ namespace Q4NSIQ_HFT_2021221.Models
 
         public string PaymentMethod { get; set; }
 
+        [NotMapped]
+        public virtual Seats Seat { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(Seat))]
+        public int SeatId { get; set; }
+
         [Required]
         public int Price { get; set; }
 

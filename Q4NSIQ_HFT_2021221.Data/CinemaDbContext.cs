@@ -60,6 +60,11 @@ namespace Q4NSIQ_HFT_2021221.Data
                 .WithMany(staff => staff.Tickets)
                 .HasForeignKey(ticket => ticket.StaffId)
                 .OnDelete(DeleteBehavior.Restrict);
+                entity
+                .HasOne(ticket => ticket.Seat)
+                .WithMany(seat => seat.Tickets)
+                .HasForeignKey(ticket => ticket.SeatId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Seats>(entity =>
@@ -112,75 +117,75 @@ namespace Q4NSIQ_HFT_2021221.Data
             {
                 if (i < 20)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1, SeatCategory = "Front", MovieHallId = movieHall1.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1, SeatCategory = "Front", SeatNumber = i + 1, MovieHallId = movieHall1.MovieHallId });
                 }
                 else if (i < 35)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1, SeatCategory = "Middle", MovieHallId = movieHall1.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1, SeatCategory = "Middle", SeatNumber = i + 1, MovieHallId = movieHall1.MovieHallId });
                 }
                 else
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1, SeatCategory = "Back", MovieHallId = movieHall1.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1, SeatCategory = "Back", SeatNumber = i + 1, MovieHallId = movieHall1.MovieHallId });
                 }
             }
             for (int i = 0; i < 60; i++)
             {
                 if (i < 20)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50, SeatCategory = "Front", MovieHallId = movieHall2.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50, SeatCategory = "Front", SeatNumber = i + 1, MovieHallId = movieHall2.MovieHallId });
                 }
                 else if (i < 40)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50, SeatCategory = "Middle", MovieHallId = movieHall2.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50, SeatCategory = "Middle", SeatNumber = i + 1, MovieHallId = movieHall2.MovieHallId });
                 }
                 else
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50, SeatCategory = "Back", MovieHallId = movieHall2.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50, SeatCategory = "Back", SeatNumber = i + 1, MovieHallId = movieHall2.MovieHallId });
                 }
             }
             for (int i = 0; i < 55; i++)
             {
                 if (i < 20)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60, SeatCategory = "Front", MovieHallId = movieHall3.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60, SeatCategory = "Front", SeatNumber = i + 1, MovieHallId = movieHall3.MovieHallId });
                 }
                 else if (i < 35)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60, SeatCategory = "Middle", MovieHallId = movieHall3.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60, SeatCategory = "Middle", SeatNumber = i + 1, MovieHallId = movieHall3.MovieHallId });
                 }
                 else
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60, SeatCategory = "Back", MovieHallId = movieHall3.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60, SeatCategory = "Back", SeatNumber = i + 1, MovieHallId = movieHall3.MovieHallId });
                 }
             }
             for (int i = 0; i < 60; i++)
             {
                 if (i < 20)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55, SeatCategory = "Front", MovieHallId = movieHall4.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55, SeatCategory = "Front", SeatNumber = i + 1, MovieHallId = movieHall4.MovieHallId });
                 }
                 else if (i < 40)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55, SeatCategory = "Middle", MovieHallId = movieHall4.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55, SeatCategory = "Middle", SeatNumber = i + 1, MovieHallId = movieHall4.MovieHallId });
                 }
                 else
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55, SeatCategory = "Back", MovieHallId = movieHall4.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55, SeatCategory = "Back", SeatNumber = i + 1, MovieHallId = movieHall4.MovieHallId });
                 }
             }
             for (int i = 0; i < 50; i++)
             {
                 if (i < 20)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55 + 60, SeatCategory = "Front", MovieHallId = movieHall5.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55 + 60, SeatCategory = "Front", SeatNumber = i + 1, MovieHallId = movieHall5.MovieHallId });
                 }
                 else if (i < 35)
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55 + 60, SeatCategory = "Middle", MovieHallId = movieHall5.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55 + 60, SeatCategory = "Middle", SeatNumber = i + 1, MovieHallId = movieHall5.MovieHallId });
                 }
                 else
                 {
-                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55 + 60, SeatCategory = "Back", MovieHallId = movieHall5.MovieHallId });
+                    modelBuilder.Entity<Seats>().HasData(new Seats() { SeatId = i + 1 + 50 + 60 + 55 + 60, SeatCategory = "Back", SeatNumber = i + 1, MovieHallId = movieHall5.MovieHallId });
                 }
             }
 
@@ -262,7 +267,7 @@ namespace Q4NSIQ_HFT_2021221.Data
                          ticket11, ticket12, ticket13, ticket14, ticket15, ticket16, ticket17, ticket18, ticket19, ticket20);
             #endregion
 
-            
+
         }
     }
 }
