@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class StaffLogic
+    public class StaffLogic : IStaffLogic
     {
         IStaffRepository staffRepo;
         IMovieHallRepository movieHallRepo;

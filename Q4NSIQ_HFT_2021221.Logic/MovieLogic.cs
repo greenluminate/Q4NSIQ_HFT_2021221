@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class MovieLogic
+    public class MovieLogic : IMovieLogic
     {
         IMovieRepository movieRepo;
 
