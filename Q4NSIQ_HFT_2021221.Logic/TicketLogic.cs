@@ -41,5 +41,21 @@ namespace Q4NSIQ_HFT_2021221.Logic
         {
             ticketRepo.Delete(id);
         }
+
+        #region NON-CURD
+        public IEnumerable<KeyValuePair<Seats, int>> Top10MostUsedSeats()
+        {
+            var q = (from ticket in ticketRepo.ReadAll().ToList()
+                     group ticket by ticket.Seat into seatGrp
+                     let count = seatGrp.Count()
+                     orderby count
+                     select new KeyValuePair<Seats, int>
+                     (
+                         seatGrp.Key,
+                         count
+                     )).Take(10);
+            return q;
+        }
+        #endregion
     }
 }
