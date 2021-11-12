@@ -238,27 +238,27 @@ namespace Q4NSIQ_HFT_2021221.Data
                          show21, show22, show23, show24, show25, show26, show27);
 
             #region TicketPreData
-            Ticket ticket1 = new Ticket() { TicketId = 1, ShowtimeId = show1.ShowtimeId, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
-            Ticket ticket2 = new Ticket() { TicketId = 2, ShowtimeId = show2.ShowtimeId, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 25 };
-            Ticket ticket3 = new Ticket() { TicketId = 3, ShowtimeId = show3.ShowtimeId, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 25 };
-            Ticket ticket4 = new Ticket() { TicketId = 4, ShowtimeId = show4.ShowtimeId, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
-            Ticket ticket5 = new Ticket() { TicketId = 5, ShowtimeId = show5.ShowtimeId, StaffId = staff5.StaffId, PaymentMethod = "card", Price = 35 };
-            Ticket ticket6 = new Ticket() { TicketId = 6, ShowtimeId = show6.ShowtimeId, StaffId = staff5.StaffId, PaymentMethod = "cash", Price = 35 };
-            Ticket ticket7 = new Ticket() { TicketId = 7, ShowtimeId = show8.ShowtimeId, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
-            Ticket ticket8 = new Ticket() { TicketId = 8, ShowtimeId = show7.ShowtimeId, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 20 };
-            Ticket ticket9 = new Ticket() { TicketId = 9, ShowtimeId = show9.ShowtimeId, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 20 };
-            Ticket ticket10 = new Ticket() { TicketId = 10, ShowtimeId = show10.ShowtimeId, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket1 = new Ticket() { TicketId = 1, ShowtimeId = show1.ShowtimeId, SeatId = 1, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket2 = new Ticket() { TicketId = 2, ShowtimeId = show2.ShowtimeId, SeatId = 2, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 25 };
+            Ticket ticket3 = new Ticket() { TicketId = 3, ShowtimeId = show3.ShowtimeId, SeatId = 3, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 25 };
+            Ticket ticket4 = new Ticket() { TicketId = 4, ShowtimeId = show4.ShowtimeId, SeatId = 4, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket5 = new Ticket() { TicketId = 5, ShowtimeId = show5.ShowtimeId, SeatId = 5, StaffId = staff5.StaffId, PaymentMethod = "card", Price = 35 };
+            Ticket ticket6 = new Ticket() { TicketId = 6, ShowtimeId = show6.ShowtimeId, SeatId = 6, StaffId = staff5.StaffId, PaymentMethod = "cash", Price = 35 };
+            Ticket ticket7 = new Ticket() { TicketId = 7, ShowtimeId = show8.ShowtimeId, SeatId = 7, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket8 = new Ticket() { TicketId = 8, ShowtimeId = show7.ShowtimeId, SeatId = 8, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 20 };
+            Ticket ticket9 = new Ticket() { TicketId = 9, ShowtimeId = show9.ShowtimeId, SeatId = 1 + 50 + 60, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 20 };
+            Ticket ticket10 = new Ticket() { TicketId = 10, ShowtimeId = show10.ShowtimeId, SeatId = 2 + 50 + 60, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
 
-            Ticket ticket11 = new Ticket() { TicketId = 11, ShowtimeId = show11.ShowtimeId, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
-            Ticket ticket12 = new Ticket() { TicketId = 12, ShowtimeId = show12.ShowtimeId, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 25 };
-            Ticket ticket13 = new Ticket() { TicketId = 13, ShowtimeId = show13.ShowtimeId, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 25 };
-            Ticket ticket14 = new Ticket() { TicketId = 14, ShowtimeId = show14.ShowtimeId, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
-            Ticket ticket15 = new Ticket() { TicketId = 15, ShowtimeId = show15.ShowtimeId, StaffId = staff5.StaffId, PaymentMethod = "card", Price = 35 };
-            Ticket ticket16 = new Ticket() { TicketId = 16, ShowtimeId = show16.ShowtimeId, StaffId = staff5.StaffId, PaymentMethod = "cash", Price = 35 };
-            Ticket ticket17 = new Ticket() { TicketId = 17, ShowtimeId = show18.ShowtimeId, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
-            Ticket ticket18 = new Ticket() { TicketId = 18, ShowtimeId = show17.ShowtimeId, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 20 };
-            Ticket ticket19 = new Ticket() { TicketId = 19, ShowtimeId = show19.ShowtimeId, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 20 };
-            Ticket ticket20 = new Ticket() { TicketId = 20, ShowtimeId = show20.ShowtimeId, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket11 = new Ticket() { TicketId = 11, ShowtimeId = show11.ShowtimeId, SeatId = 3 + 50 + 60, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket12 = new Ticket() { TicketId = 12, ShowtimeId = show12.ShowtimeId, SeatId = 1 + 50 + 60 + 55, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 25 };
+            Ticket ticket13 = new Ticket() { TicketId = 13, ShowtimeId = show13.ShowtimeId, SeatId = 2 + 50 + 60 + 55, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 25 };
+            Ticket ticket14 = new Ticket() { TicketId = 14, ShowtimeId = show14.ShowtimeId, SeatId = 3 + 50 + 60 + 55, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket15 = new Ticket() { TicketId = 15, ShowtimeId = show15.ShowtimeId, SeatId = 4 + 50 + 60, StaffId = staff5.StaffId, PaymentMethod = "card", Price = 35 };
+            Ticket ticket16 = new Ticket() { TicketId = 16, ShowtimeId = show16.ShowtimeId, SeatId = 5 + 50 + 60, StaffId = staff5.StaffId, PaymentMethod = "cash", Price = 35 };
+            Ticket ticket17 = new Ticket() { TicketId = 17, ShowtimeId = show18.ShowtimeId, SeatId = 6 + 50 + 60, StaffId = staff4.StaffId, PaymentMethod = "card", Price = 30 };
+            Ticket ticket18 = new Ticket() { TicketId = 18, ShowtimeId = show17.ShowtimeId, SeatId = 4 + 50 + 60 + 55, StaffId = staff3.StaffId, PaymentMethod = "card", Price = 20 };
+            Ticket ticket19 = new Ticket() { TicketId = 19, ShowtimeId = show19.ShowtimeId, SeatId = 5 + 50 + 60 + 55, StaffId = staff2.StaffId, PaymentMethod = "cash", Price = 20 };
+            Ticket ticket20 = new Ticket() { TicketId = 20, ShowtimeId = show20.ShowtimeId, SeatId = 6 + 50 + 60 + 55, StaffId = staff1.StaffId, PaymentMethod = "card", Price = 30 };
 
             #endregion
             modelBuilder
@@ -266,8 +266,6 @@ namespace Q4NSIQ_HFT_2021221.Data
                 .HasData(ticket1, ticket2, ticket3, ticket4, ticket5, ticket6, ticket7, ticket8, ticket9, ticket10,
                          ticket11, ticket12, ticket13, ticket14, ticket15, ticket16, ticket17, ticket18, ticket19, ticket20);
             #endregion
-
-
         }
     }
 }
