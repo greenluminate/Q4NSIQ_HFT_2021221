@@ -38,5 +38,26 @@ namespace Q4NSIQ_HFT_2021221.Models
         {
             Tickets = new HashSet<Ticket>();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return ShowtimeId * 59 +
+                   Date.Year * 2 +
+                   Date.Month * 3 +
+                   Date.Day * 7 +
+                   Date.Hour * 5 +
+                   MovieId * 13 +
+                   MovieHallId * MovieHallId;
+        }
     }
 }

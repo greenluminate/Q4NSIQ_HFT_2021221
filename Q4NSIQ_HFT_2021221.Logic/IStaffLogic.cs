@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public interface IStaffLogic
+    public interface IStaffLogic : ILogic<Staff>
     {
         IEnumerable<KeyValuePair<string, int>> CountOfSoldTicketsByStaff();
         IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>> SoldTicketsByStaffPerHallType();

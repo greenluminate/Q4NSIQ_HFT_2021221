@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IRepository<Movie>
     {
         IQueryable<Movie> ReadByTitle(string title);
     }

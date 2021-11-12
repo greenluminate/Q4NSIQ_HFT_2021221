@@ -35,5 +35,24 @@ namespace Q4NSIQ_HFT_2021221.Models
         {
             Tickets = new HashSet<Ticket>();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return StaffId * 7 +
+                   Name.Length * 2 +
+                   (Gender is null ? 0 : Gender.Length) +
+                   IC[3] * 23 +
+                   MobileNumber[9] * 11;
+        }
     }
 }

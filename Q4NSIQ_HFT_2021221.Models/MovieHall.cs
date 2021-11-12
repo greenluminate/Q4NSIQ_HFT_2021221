@@ -30,5 +30,22 @@ namespace Q4NSIQ_HFT_2021221.Models
             Showtimes = new HashSet<Showtime>();
             Seats = new HashSet<Seats>();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return MovieHallId * 59 +
+                   NumberOfSeats * 5 +
+                   (HallCategory is null ? HallCategory.Length * 2 : 0);
+        }
     }
 }

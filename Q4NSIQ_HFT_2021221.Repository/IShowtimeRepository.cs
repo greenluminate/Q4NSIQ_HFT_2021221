@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    public interface IShowtimeRepository
+    public interface IShowtimeRepository : IRepository<Showtime>
     {
         IQueryable<Showtime> ReadByDate(DateTime date);
     }

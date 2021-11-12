@@ -39,5 +39,25 @@ namespace Q4NSIQ_HFT_2021221.Models
         [Required]
         [ForeignKey(nameof(Showtime))]
         public int ShowtimeId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return TicketId * 59 +
+                   SeatId * 5 +
+                   StaffId * 2 +
+                   ShowtimeId * 13 +
+                   Price * 7 +
+                   (PaymentMethod is null ? 0 : PaymentMethod.Length * 11);
+        }
     }
 }

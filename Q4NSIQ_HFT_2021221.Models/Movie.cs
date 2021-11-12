@@ -38,5 +38,22 @@ namespace Q4NSIQ_HFT_2021221.Models
             Showtimes = new HashSet<Showtime>();
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return MovieId * 59 +
+                   MovieTitle.Length * 5 +
+                   Languages.Length * 2 +
+                   (int)Duration.TotalSeconds;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    public interface IStaffRepository
+    public interface IStaffRepository : IRepository<Staff>
     {
         IQueryable<Staff> ReadByName(string name);
     }

@@ -52,7 +52,7 @@ namespace Q4NSIQ_HFT_2021221.Logic
                        staff.Name,
                        moviesTitelsOrdered.Select(mt => new KeyValuePair<string, int>
                                                         (mt, staff.Tickets.Where(t => t.Showtime.Movie.MovieTitle == mt).Count()))
-                                                        .Where(kv => kv.Value == maxCount)
+                                                        .Where(kv => kv.Value == maxCount && kv.Value != 0)
                    );
         }
 
@@ -60,8 +60,8 @@ namespace Q4NSIQ_HFT_2021221.Logic
         SoldTicketsByStaffPerHallType()
         {
             return from staff in repo.ReadAll().ToList()
-                   let categories = movieHallRepo.ReadAll().Select(hall => hall.HallCategory).Distinct().ToList()
-                   orderby staff.Name, categories
+                   let categories = movieHallRepo.ReadAll().Select(hall => hall.HallCategory).Distinct().OrderBy(c => c).ToList()
+                   orderby staff.Name
                    select new KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>
                    (
                        staff.Name,
