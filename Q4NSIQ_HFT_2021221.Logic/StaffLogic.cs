@@ -8,50 +8,22 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class StaffLogic : IStaffLogic
+    public class StaffLogic : Logic<Staff>, IStaffLogic
     {
-        IStaffRepository staffRepo;
-        IMovieHallRepository movieHallRepo;
-        IMovieRepository movieRepo;
+        IRepository<MovieHall> movieHallRepo;
+        IRepository<Movie> movieRepo;
 
-        public StaffLogic(IStaffRepository staffRepo, IMovieHallRepository movieHallRepo, IMovieRepository movieRepo)
+        public StaffLogic(IRepository<Staff> staffRepo, IRepository<MovieHall> movieHallRepo, IRepository<Movie> movieRepo)
+        : base(staffRepo)
         {
-            this.staffRepo = staffRepo;
             this.movieHallRepo = movieHallRepo;
             this.movieRepo = movieRepo;
         }
 
-        public void Create(Staff Staff)
-        {
-            staffRepo.Create(Staff);
-        }
-
-        public Staff Read(int id)
-        {
-            return staffRepo.Read(id);
-        }
-
-        public IEnumerable<Staff> ReadAll()
-        {
-            return staffRepo.ReadAll();
-        }
-
-        public void Update(Staff Staff)
-        {
-            staffRepo.Update(Staff);
-        }
-
-        public void Delete(int id)
-        {
-            staffRepo.Delete(id);
-        }
-
-        #region NON-CRUD
-
         public IEnumerable<KeyValuePair<string, int>>
         CountOfSoldTicketsByStaff()
         {
-            return from staff in staffRepo.ReadAll()
+            return from staff in repo.ReadAll()
                    orderby staff.Tickets.Count() descending, staff.Name ascending
                    let count = staff.Tickets.Count()
                    select new KeyValuePair<string, int>
@@ -61,7 +33,7 @@ namespace Q4NSIQ_HFT_2021221.Logic
         public IEnumerable<KeyValuePair<string, int>>
         SUMPriceOfSoldTicketsByStaff()
         {
-            return (from staff in staffRepo.ReadAll().ToArray()
+            return (from staff in repo.ReadAll().ToArray()
                     orderby staff.Tickets.Sum(x => x.Price) descending, staff.Name ascending
                     select new KeyValuePair<string, int>
                     (staff.Name, staff.Tickets.Sum(x => x.Price))).ToArray();
@@ -70,7 +42,7 @@ namespace Q4NSIQ_HFT_2021221.Logic
         public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>
         TopSoldTicketsByStaffPerMovie()
         {
-            return from staff in staffRepo.ReadAll().ToArray()
+            return from staff in repo.ReadAll().ToArray()
                    let movieTitles = movieRepo.ReadAll().Select(m => m.MovieTitle).ToArray()
                    let moviesTitelsOrdered = movieTitles.OrderByDescending(m => staff.Tickets.Where(t => t.Showtime.Movie.MovieTitle == m).Count()).ToArray()
                    let maxCount = moviesTitelsOrdered.Select(mt => staff.Tickets.Where(t => t.Showtime.Movie.MovieTitle == mt).Count()).FirstOrDefault()
@@ -87,7 +59,7 @@ namespace Q4NSIQ_HFT_2021221.Logic
         public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>
         SoldTicketsByStaffPerHallType()
         {
-            return from staff in staffRepo.ReadAll().ToList()
+            return from staff in repo.ReadAll().ToList()
                    let categories = movieHallRepo.ReadAll().Select(hall => hall.HallCategory).Distinct().ToList()
                    orderby staff.Name, categories
                    select new KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>
@@ -98,6 +70,5 @@ namespace Q4NSIQ_HFT_2021221.Logic
                                               .Count()))
                    );
         }
-        #endregion
     }
 }

@@ -8,54 +8,21 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class TicketLogic : ITicketLogic
+    public class TicketLogic : Logic<Ticket>, ITicketLogic
     {
-        ITicketRepository ticketRepo;
+        public TicketLogic(IRepository<Ticket> ticketRepo) : base(ticketRepo) { }
 
-        public TicketLogic(ITicketRepository ticketRepo)
-        {
-            this.ticketRepo = ticketRepo;
-        }
-
-        public void Create(Ticket Ticket)
-        {
-            ticketRepo.Create(Ticket);
-        }
-
-        public Ticket Read(int id)
-        {
-            return ticketRepo.Read(id);
-        }
-
-        public IEnumerable<Ticket> ReadAll()
-        {
-            return ticketRepo.ReadAll();
-        }
-
-        public void Update(Ticket Ticket)
-        {
-            ticketRepo.Update(Ticket);
-        }
-
-        public void Delete(int id)
-        {
-            ticketRepo.Delete(id);
-        }
-
-        #region NON-CURD
         public IEnumerable<KeyValuePair<Seats, int>> Top10MostUsedSeats()
         {
-            var q = (from ticket in ticketRepo.ReadAll().ToList()
-                     group ticket by ticket.Seat into seatGrp
-                     let count = seatGrp.Count()
-                     orderby count
-                     select new KeyValuePair<Seats, int>
-                     (
-                         seatGrp.Key,
-                         count
-                     )).Take(10);
-            return q;
+            return (from ticket in repo.ReadAll().ToList()
+                    group ticket by ticket.Seat into seatGrp
+                    let count = seatGrp.Count()
+                    orderby count
+                    select new KeyValuePair<Seats, int>
+                    (
+                        seatGrp.Key,
+                        count
+                    )).Take(10);
         }
-        #endregion
     }
 }
