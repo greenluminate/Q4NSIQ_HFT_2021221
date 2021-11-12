@@ -5,10 +5,6 @@ namespace Q4NSIQ_HFT_2021221.Repository
 {
     public interface ISeatsRepository
     {
-        void Create(Seats seats);
-        void Delete(int id);
-        Seats Read(int id);
-        IQueryable<Seats> ReadAll();
-        void Update(Seats seats);
+        IQueryable<Seats> ReadByMovieHallId(int id);
     }
 }

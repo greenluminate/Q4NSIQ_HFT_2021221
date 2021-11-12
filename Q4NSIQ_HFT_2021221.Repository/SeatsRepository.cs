@@ -8,44 +8,13 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    public class SeatsRepository : ISeatsRepository
+    public class SeatsRepository : Repository<Seats>, ISeatsRepository
     {
-        CinemaDbContext db;
+        public SeatsRepository(CinemaDbContext db) : base(db) { }
 
-        public SeatsRepository(CinemaDbContext db)
+        public IQueryable<Seats> ReadByMovieHallId(int id)
         {
-            this.db = db;
-        }
-
-        public void Create(Seats seats)
-        {
-            db.Seats.Add(seats);
-            db.SaveChanges();
-        }
-
-        public Seats Read(int id)
-        {
-            return db.Seats.FirstOrDefault(t => t.SeatId == id);
-        }
-
-        public IQueryable<Seats> ReadAll()
-        {
-            return db.Seats;
-        }
-
-        public void Update(Seats seats)
-        {
-            var oldSeats = Read(seats.SeatId);
-            oldSeats.SeatCategory = seats.SeatCategory;
-            oldSeats.MovieHallId = seats.MovieHallId;
-
-            db.SaveChanges();
-        }
-
-        public void Delete(int id)
-        {
-            db.Remove(Read(id));
-            db.SaveChanges();
+            return dbSet.Where(seat => seat.MovieHallId.Equals(id)).AsQueryable();
         }
     }
 }

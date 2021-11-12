@@ -8,47 +8,13 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    public class TicketRepository : ITicketRepository
+    public class TicketRepository : Repository<Ticket>, ITicketRepository
     {
-        CinemaDbContext db;
+        public TicketRepository(CinemaDbContext db) : base(db) { }
 
-        public TicketRepository(CinemaDbContext db)
+        public IQueryable<Ticket> ReadByShowtimeId(int id)
         {
-            this.db = db;
-        }
-
-        public void Create(Ticket ticket)
-        {
-            db.Tickets.Add(ticket);
-            db.SaveChanges();
-        }
-
-        public Ticket Read(int id)
-        {
-            return db.Tickets.FirstOrDefault(t => t.TicketId == id);
-        }
-
-        public IQueryable<Ticket> ReadAll()
-        {
-            return db.Tickets;
-        }
-
-        public void Update(Ticket ticket)
-        {
-            var oldTicket = Read(ticket.TicketId);
-            oldTicket.PaymentMethod = ticket.PaymentMethod;
-            oldTicket.Price = ticket.Price;
-            oldTicket.ShowtimeId = ticket.ShowtimeId;
-            oldTicket.StaffId = ticket.StaffId;
-            oldTicket.TicketId = ticket.TicketId;
-
-            db.SaveChanges();
-        }
-
-        public void Delete(int id)
-        {
-            db.Remove(Read(id));
-            db.SaveChanges();
+            return dbSet.Where(ticket => ticket.ShowtimeId.Equals(id)).AsQueryable();
         }
     }
 }

@@ -8,46 +8,13 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    public class StaffRepository : IStaffRepository
+    public class StaffRepository : Repository<Staff>, IStaffRepository
     {
-        CinemaDbContext db;
+        public StaffRepository(CinemaDbContext db) : base(db) { }
 
-        public StaffRepository(CinemaDbContext db)
+        public IQueryable<Staff> ReadByName(string name)
         {
-            this.db = db;
-        }
-
-        public void Create(Staff staff)
-        {
-            db.Staffs.Add(staff);
-            db.SaveChanges();
-        }
-
-        public Staff Read(int id)
-        {
-            return db.Staffs.FirstOrDefault(t => t.StaffId == id);
-        }
-
-        public IQueryable<Staff> ReadAll()
-        {
-            return db.Staffs;
-        }
-
-        public void Update(Staff staff)
-        {
-            var oldStaff = Read(staff.StaffId);
-            oldStaff.Name = staff.Name;
-            oldStaff.Gender = staff.Gender;
-            oldStaff.IC = staff.IC;
-            oldStaff.MobileNumber = staff.MobileNumber;
-
-            db.SaveChanges();
-        }
-
-        public void Delete(int id)
-        {
-            db.Remove(Read(id));
-            db.SaveChanges();
+            return dbSet.Where(staff => staff.Name.Equals(name)).AsQueryable();
         }
     }
 }
