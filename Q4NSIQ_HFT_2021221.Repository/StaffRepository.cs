@@ -8,7 +8,7 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Repository
 {
-    class StaffRepository : IStaffRepository
+    public class StaffRepository : IStaffRepository
     {
         CinemaDbContext db;
 
