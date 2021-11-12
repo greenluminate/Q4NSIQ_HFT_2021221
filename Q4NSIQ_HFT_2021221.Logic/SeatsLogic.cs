@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    class SeatsLogic
+    public class SeatsLogic
     {
         ISeatsRepository seatsRepo;
 

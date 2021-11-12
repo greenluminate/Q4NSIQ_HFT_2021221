@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    class TicketLogic
+    public class TicketLogic
     {
         ITicketRepository ticketRepo;
 
