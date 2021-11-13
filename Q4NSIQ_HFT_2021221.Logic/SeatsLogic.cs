@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class SeatsLogic : Logic<Seats>
+    public class SeatsLogic : Logic<Seats>, ISeatsLogic
     {
-        public SeatsLogic(IRepository<Seats> seatsRepo) : base(seatsRepo) { }
+        ISeatsRepository seatsRepo;
+        public SeatsLogic(ISeatsRepository seatsRepo)
+        : base(seatsRepo)
+        {
+            this.seatsRepo = seatsRepo;
+        }
+
+        public IEnumerable<Seats> ReadByMovieHallId(int id)
+        {
+            return seatsRepo.ReadByMovieHallId(id);
+        }
     }
 }

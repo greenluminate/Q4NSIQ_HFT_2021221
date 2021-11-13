@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class ShowtimeLogic : Logic<Showtime>
+    public class ShowtimeLogic : Logic<Showtime>, IShowtimeLogic
     {
-        public ShowtimeLogic(IRepository<Showtime> showtimeRepo) : base(showtimeRepo) { }
+        IShowtimeRepository showtimeRepo;
+        public ShowtimeLogic(IShowtimeRepository showtimeRepo)
+        : base(showtimeRepo)
+        {
+            this.showtimeRepo = showtimeRepo;
+        }
+
+        public IEnumerable<Showtime> ReadByDate(DateTime? date)
+        {
+            return showtimeRepo.ReadByDate(date);
+        }
     }
 }

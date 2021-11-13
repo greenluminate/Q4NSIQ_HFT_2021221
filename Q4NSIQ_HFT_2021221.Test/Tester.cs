@@ -23,9 +23,13 @@ namespace Q4NSIQ_HFT_2021221.Test
         ShowtimeLogic showtimeLogic;
         TicketLogic ticketLogic;
 
+        DateTime today;
+
         [SetUp]
         public void Init()
         {
+            today = DateTime.Today;
+
             #region FakeMovies
             var movies = new List<Movie>();
             movies.Add(new Movie() { MovieId = 1, MovieTitle = "30 Days Left (30 Jours Max)", Category = "Action, Comedy, Crime", AgeRestriction = 16, Languages = "HU, EN", Duration = new TimeSpan(1, 27, 0), Rating = 4 });
@@ -177,7 +181,7 @@ namespace Q4NSIQ_HFT_2021221.Test
 
             showtimes.Add(new Showtime() { ShowtimeId = 25, MovieHallId = movieHalls[0].MovieHallId, MovieId = movies[7].MovieId, Date = new DateTime(2021, 10, 17, 12, 0, 0) });
             showtimes.Add(new Showtime() { ShowtimeId = 26, MovieHallId = movieHalls[0].MovieHallId, MovieId = movies[8].MovieId, Date = new DateTime(2021, 10, 17, 16, 0, 0) });
-            showtimes.Add(new Showtime() { ShowtimeId = 27, MovieHallId = movieHalls[3].MovieHallId, MovieId = movies[0].MovieId, Date = new DateTime(2021, 10, 17, 22, 0, 0) });
+            showtimes.Add(new Showtime() { ShowtimeId = 27, MovieHallId = movieHalls[3].MovieHallId, MovieId = movies[0].MovieId, Date = today });
             #endregion
 
             #region FakeTickets
@@ -201,6 +205,7 @@ namespace Q4NSIQ_HFT_2021221.Test
 
             #endregion
 
+            #region InitMockRepo
             var mockMovieRepo = new Mock<IMovieRepository>();
             var mockMovieHallRepo = new Mock<IMovieHallRepository>();
             var mockStaffRepo = new Mock<IStaffRepository>();
@@ -208,15 +213,22 @@ namespace Q4NSIQ_HFT_2021221.Test
             var mockSeatsRepo = new Mock<ISeatsRepository>();
             var mockShowtimeRepo = new Mock<IShowtimeRepository>();
             var mockTicketRepo = new Mock<ITicketRepository>();
+            #endregion
 
-            #region SetUp-ReadAll
-            mockMovieRepo.Setup(mr => mr.Read(It.IsAny<int>())).Returns((int i) => movies.Where(m => m.MovieId == i).Single());
-            mockMovieHallRepo.Setup(mhr => mhr.Read(It.IsAny<int>())).Returns((int i) => movieHalls.Where(mh => mh.MovieHallId == i).Single());
-            mockStaffRepo.Setup(str => str.Read(It.IsAny<int>())).Returns((int i) => staffs.Where(st => st.StaffId == i).Single());
+            #region SetUp-Create
+            mockMovieRepo.Setup(mmr => mmr.Create(It.IsAny<Movie>())).Callback<Movie>(movie => movies.Add(movie));
+            mockMovieHallRepo.Setup(mmhr => mmhr.Create(It.IsAny<MovieHall>())).Callback<MovieHall>(movieHall => movieHalls.Add(movieHall));
+            mockMovieHallRepo.Setup(mmhr => mmhr.Create(It.IsAny<MovieHall>())).Throws<NullReferenceException>();
+            #endregion
 
-            mockSeatsRepo.Setup(set => set.Read(It.IsAny<int>())).Returns((int i) => seats.Where(se => se.SeatId == i).Single());
-            mockShowtimeRepo.Setup(shr => shr.Read(It.IsAny<int>())).Returns((int i) => showtimes.Where(sh => sh.ShowtimeId == i).Single());
-            mockTicketRepo.Setup(tr => tr.Read(It.IsAny<int>())).Returns((int i) => tickets.Where(t => t.TicketId == i).Single());
+            #region SetUp-Read
+            mockMovieRepo.Setup(mr => mr.Read(It.IsAny<int>())).Returns((int id) => movies.Where(m => m.MovieId == id).Single());
+            mockMovieHallRepo.Setup(mhr => mhr.Read(It.IsAny<int>())).Returns((int id) => movieHalls.Where(mh => mh.MovieHallId == id).Single());
+            mockStaffRepo.Setup(str => str.Read(It.IsAny<int>())).Returns((int id) => staffs.Where(st => st.StaffId == id).Single());
+
+            mockSeatsRepo.Setup(setr => setr.Read(It.IsAny<int>())).Returns((int? id) => seats.Where(se => se.SeatId == id).Single());
+            mockShowtimeRepo.Setup(shr => shr.Read(It.IsAny<int>())).Returns((int id) => showtimes.Where(sh => sh.ShowtimeId == id).Single());
+            mockTicketRepo.Setup(tr => tr.Read(It.IsAny<int>())).Returns((int id) => tickets.Where(t => t.TicketId == id).Single());
             #endregion
 
             #region SetUp-ReadAll
@@ -224,11 +236,22 @@ namespace Q4NSIQ_HFT_2021221.Test
             mockMovieHallRepo.Setup(mhr => mhr.ReadAll()).Returns(movieHalls.AsQueryable());
             mockStaffRepo.Setup(str => str.ReadAll()).Returns(staffs.AsQueryable());
 
-            mockSeatsRepo.Setup(set => set.ReadAll()).Returns(seats.AsQueryable());
+            mockSeatsRepo.Setup(setr => setr.ReadAll()).Returns(seats.AsQueryable());
             mockShowtimeRepo.Setup(shr => shr.ReadAll()).Returns(showtimes.AsQueryable());
             mockTicketRepo.Setup(tr => tr.ReadAll()).Returns(tickets.AsQueryable());
             #endregion
 
+            #region SetUp-UniqueCRUD
+            mockMovieRepo.Setup(mr => mr.ReadByTitle(It.IsAny<string>())).Returns((string title) => movies.Where(m => m.MovieTitle == title).AsQueryable());
+            mockMovieHallRepo.Setup(mhr => mhr.ReadByCategory(It.IsAny<string>())).Returns((string category) => movieHalls.Where(mh => mh.HallCategory == category).AsQueryable());
+            mockStaffRepo.Setup(str => str.ReadByName(It.IsAny<string>())).Returns((string name) => staffs.Where(st => st.Name == name).AsQueryable());
+
+            mockSeatsRepo.Setup(setr => setr.ReadByMovieHallId(It.IsAny<int>())).Returns((int id) => seats.Where(seat => seat.MovieHallId == id).AsQueryable());
+            mockShowtimeRepo.Setup(shr => shr.ReadByDate(It.IsAny<DateTime?>())).Returns((DateTime? date) => showtimes.Where(sh => sh.Date.Date == (date is null ? today.Date : date.Value.Date)).AsQueryable());
+            mockTicketRepo.Setup(tr => tr.ReadByShowtimeId(It.IsAny<int>())).Returns((int id) => tickets.Where(t => t.ShowtimeId == id).AsQueryable());
+            #endregion
+
+            #region InitLogic
             movieLogic = new MovieLogic(mockMovieRepo.Object);
             movieHallLogic = new MovieHallLogic(mockMovieHallRepo.Object);
             staffLogic = new StaffLogic(mockStaffRepo.Object, mockMovieHallRepo.Object, mockMovieRepo.Object);
@@ -236,7 +259,9 @@ namespace Q4NSIQ_HFT_2021221.Test
             seatsLogic = new SeatsLogic(mockSeatsRepo.Object);
             showtimeLogic = new ShowtimeLogic(mockShowtimeRepo.Object);
             ticketLogic = new TicketLogic(mockTicketRepo.Object);
+            #endregion
 
+            #region SetNotMappedData
             foreach (var movie in movies)
             {
                 foreach (var show in showtimes)
@@ -318,7 +343,134 @@ namespace Q4NSIQ_HFT_2021221.Test
                 ticket.Staff = staffLogic.Read(ticket.StaffId);
                 ticket.Showtime = showtimeLogic.Read(ticket.ShowtimeId);
             }
+            #endregion
         }
+
+        #region CRUDTests
+        [Test]
+        public void TicketReadTest()
+        {
+            Ticket testTicket = new Ticket() { TicketId = 10, ShowtimeId = 10, SeatId = 112, StaffId = 1, PaymentMethod = "card", Price = 30 };
+            Assert.That(testTicket, Is.EqualTo(ticketLogic.Read(10)));
+        }
+
+        [Test]
+        public void MovieCreatTest()
+        {
+            Movie newMovie = new Movie()
+            {
+                MovieId = 999,
+                MovieTitle = "New Movie",
+                Category = "Horror, Thriller",
+                AgeRestriction = 18,
+                Languages = "HU",
+                Duration = new TimeSpan(1, 52, 0),
+                Rating = 3,
+            };
+
+            movieLogic.Create(newMovie);
+            Assert.That(newMovie, Is.EqualTo(movieLogic.Read(newMovie.MovieId)));
+        }
+
+        [Test]
+        public void MovieHallCreatTest()
+        {
+            MovieHall newMovieHall = new MovieHall()
+            {
+                MovieHallId = 6,
+                HallCategory = "3D"
+            };
+
+            Assert.Throws(typeof(NullReferenceException), () => movieHallLogic.Create(newMovieHall));
+        }
+        #endregion
+
+        #region UniqueCRUDTests
+        [Test]
+        public void MovieReadByTitleTest()
+        {
+            var result = movieLogic.ReadByTitle("Free Guy");
+            var expected = new List<Movie>()
+            {
+                new Movie() { MovieId = 7, MovieTitle = "Free Guy", Category = "Action, Comedy, Fantasy",
+                              AgeRestriction = 12, Languages = "HU, EN", Duration = new TimeSpan(1, 55, 0),
+                              Rating = 4 }
+            };
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void MovieHallReadByCategoryTest()
+        {
+            var result = movieHallLogic.ReadByCategory("2D");
+            var expected = new List<MovieHall>()
+            {
+                new MovieHall() { MovieHallId = 1, HallCategory = "2D", NumberOfSeats = 50 },
+                new MovieHall() { MovieHallId = 2, HallCategory = "2D", NumberOfSeats = 60 }
+            };
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void StaffReadByNameTest()
+        {
+            var result = staffLogic.ReadByName("Jack Pott");
+            var expected = new List<Staff>()
+            {
+                new Staff() { StaffId = 3, Name = "Jack Pott", Gender = "Male", IC = "696969GF", MobileNumber = "36706660069" }
+            };
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void StaffReadByNameTestWithNonExisted()
+        {
+            var result = staffLogic.ReadByName("Anonymous");
+            var expected = new List<Staff>() { };
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ShowtimeReadByDateTestToday()
+        {
+            var result = showtimeLogic.ReadByDate(null);
+            var expected = new List<Showtime>()
+            {
+                new Showtime() { ShowtimeId = 27, MovieHallId = 4, MovieId = 1, Date = today }
+            };
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ShowtimeReadByDateTest()
+        {
+            var result = showtimeLogic.ReadByDate(new DateTime(2021, 10, 14));
+            var expected = new List<Showtime>()
+            {
+                new Showtime() { ShowtimeId = 5, MovieHallId = 1, MovieId = 7, Date = new DateTime(2021, 10, 14, 12, 0, 0) },
+                new Showtime() { ShowtimeId = 6, MovieHallId = 1, MovieId = 7, Date = new DateTime(2021, 10, 14, 14, 20, 0) },
+                new Showtime() { ShowtimeId = 7, MovieHallId = 1, MovieId = 7, Date = new DateTime(2021, 10, 14, 16, 40, 0) },
+                new Showtime() { ShowtimeId = 8, MovieHallId = 1, MovieId = 7, Date = new DateTime(2021, 10, 14, 20, 0, 0) }
+            };
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ReadByShowtimeIdTest()
+        {
+            var result = ticketLogic.ReadByShowtimeId(4);
+            var expected = new List<Ticket>()
+            {
+                new Ticket() { TicketId = 4, ShowtimeId = 4, SeatId = 4, StaffId = 4, PaymentMethod = "card", Price = 30 }
+            };
+        }
+        #endregion
 
         #region StaffLogicTests
         [Test]

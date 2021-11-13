@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {
-    public class MovieHallLogic : Logic<MovieHall>
+    public class MovieHallLogic : Logic<MovieHall>, IMovieHallLogic
     {
-        public MovieHallLogic(IRepository<MovieHall> movieHallRepo) : base(movieHallRepo) { }
+        IMovieHallRepository movieHallRepo;
+        public MovieHallLogic(IMovieHallRepository movieHallRepo)
+        : base(movieHallRepo)
+        {
+            this.movieHallRepo = movieHallRepo;
+        }
+
+        public IEnumerable<MovieHall> ReadByCategory(string category)
+        {
+            return movieHallRepo.ReadByCategory(category);
+        }
     }
 }

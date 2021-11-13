@@ -6,6 +6,6 @@ namespace Q4NSIQ_HFT_2021221.Repository
 {
     public interface IShowtimeRepository : IRepository<Showtime>
     {
-        IQueryable<Showtime> ReadByDate(DateTime date);
+        IQueryable<Showtime> ReadByDate(DateTime? date);
     }
 }

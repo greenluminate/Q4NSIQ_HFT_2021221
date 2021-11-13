@@ -10,14 +10,21 @@ namespace Q4NSIQ_HFT_2021221.Logic
 {
     public class StaffLogic : Logic<Staff>, IStaffLogic
     {
+        IStaffRepository staffRepo;
         IRepository<MovieHall> movieHallRepo;
         IRepository<Movie> movieRepo;
 
-        public StaffLogic(IRepository<Staff> staffRepo, IRepository<MovieHall> movieHallRepo, IRepository<Movie> movieRepo)
+        public StaffLogic(IStaffRepository staffRepo, IRepository<MovieHall> movieHallRepo, IRepository<Movie> movieRepo)
         : base(staffRepo)
         {
+            this.staffRepo = staffRepo;
             this.movieHallRepo = movieHallRepo;
             this.movieRepo = movieRepo;
+        }
+
+        public IEnumerable<Staff> ReadByName(string name)
+        {
+            return staffRepo.ReadByName(name);
         }
 
         public IEnumerable<KeyValuePair<string, int>>

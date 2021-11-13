@@ -10,8 +10,18 @@ namespace Q4NSIQ_HFT_2021221.Logic
 {
     public class TicketLogic : Logic<Ticket>, ITicketLogic
     {
-        public TicketLogic(IRepository<Ticket> ticketRepo) : base(ticketRepo) { }
-     
+        ITicketRepository ticketRepo;
+        public TicketLogic(ITicketRepository ticketRepo)
+        : base(ticketRepo)
+        {
+            this.ticketRepo = ticketRepo;
+        }
+
+        public IEnumerable<Ticket> ReadByShowtimeId(int id)
+        {
+            return ticketRepo.ReadByShowtimeId(id);
+        }
+
         public IEnumerable<KeyValuePair<Seats, int>> Top10MostUsedSeats()
         {
             return (from ticket in repo.ReadAll().ToList()

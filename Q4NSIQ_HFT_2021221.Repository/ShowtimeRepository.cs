@@ -12,9 +12,11 @@ namespace Q4NSIQ_HFT_2021221.Repository
     {
         public ShowtimeRepository(CinemaDbContext db) : base(db) { }
 
-        public IQueryable<Showtime> ReadByDate(DateTime date)
+        public IQueryable<Showtime> ReadByDate(DateTime? date)
         {
-            return dbSet.Where(showtime => showtime.Date.Date.Equals(date)).AsQueryable();
+            date = date is null ? DateTime.Today : date;
+
+            return dbSet.Where(showtime => showtime.Date.Date.Equals(date.Value.Date)).OrderBy(showtime => showtime.Date).AsQueryable();
         }
     }
 }
