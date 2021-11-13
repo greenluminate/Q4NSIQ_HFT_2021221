@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Models
@@ -18,6 +19,7 @@ namespace Q4NSIQ_HFT_2021221.Models
         public DateTime Date { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual Movie Movie { get; set; }
 
         [Required]
@@ -25,6 +27,7 @@ namespace Q4NSIQ_HFT_2021221.Models
         public int MovieId { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual MovieHall MovieHall { get; set; }
 
         [Required]
@@ -32,6 +35,7 @@ namespace Q4NSIQ_HFT_2021221.Models
         public int MovieHallId { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<Ticket> Tickets { get; set; }
 
         public Showtime()
