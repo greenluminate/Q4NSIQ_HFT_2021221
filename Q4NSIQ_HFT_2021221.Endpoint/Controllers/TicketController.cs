@@ -8,7 +8,7 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     [ApiController]
     public class TicketController : GenericController<Ticket>
     {
@@ -20,13 +20,13 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
             this.ticketLogic = ticketLogic;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("[action]/{id}")]
         public IEnumerable<Ticket> GetByShowtimeId(int id)
         {
             return ticketLogic.ReadByShowtimeId(id);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<KeyValuePair<Seats, int>> Top10MostUsedSeats()
         {
             return ticketLogic.Top10MostUsedSeats();

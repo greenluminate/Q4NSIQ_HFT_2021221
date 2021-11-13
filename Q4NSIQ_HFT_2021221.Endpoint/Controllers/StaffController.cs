@@ -20,34 +20,34 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
             this.staffLogic = staffLogic;
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("[action]/{name}")]
         public IEnumerable<Staff> GetByName(string name)
         {
             return staffLogic.ReadByName(name);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<KeyValuePair<string, int>>
         CountOfSoldTicketsByStaff()
         {
             return staffLogic.CountOfSoldTicketsByStaff();
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<KeyValuePair<string, int>>
         SUMPriceOfSoldTicketsByStaff()
         {
             return staffLogic.SUMPriceOfSoldTicketsByStaff();
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>
         TopSoldTicketsByStaffPerMovie()
         {
             return staffLogic.TopSoldTicketsByStaffPerMovie();
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>
         SoldTicketsByStaffPerHallType()
         {

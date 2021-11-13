@@ -16,6 +16,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
 {
     public class Startup
     {
+        //POSTMAN invite link: https://app.getpostman.com/join-team?invite_code=0279391ad6191a2a9dd581246b082782
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();

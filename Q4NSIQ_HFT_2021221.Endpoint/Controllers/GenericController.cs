@@ -7,7 +7,6 @@ using Q4NSIQ_HFT_2021221.Logic;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
-    //[Route("{logic}")]
     [ApiController]
     public class GenericController<TEntity> : ControllerBase where TEntity : class
     {

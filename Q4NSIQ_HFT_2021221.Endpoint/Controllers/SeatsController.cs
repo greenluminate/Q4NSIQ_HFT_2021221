@@ -8,7 +8,7 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     [ApiController]
     public class SeatsController : GenericController<Seats>
     {
@@ -20,7 +20,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
             this.seatsLogic = seatsLogic;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("[action]/{id}")]
         public IEnumerable<Seats> GetByMovieHallId(int id)
         {
             return seatsLogic.ReadByMovieHallId(id);

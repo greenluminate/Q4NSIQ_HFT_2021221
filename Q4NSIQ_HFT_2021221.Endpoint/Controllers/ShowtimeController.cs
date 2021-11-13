@@ -20,7 +20,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
             this.showtimeLogic = showtimeLogic;
         }
 
-        [HttpGet("{date}")]
+        [HttpGet("[action]/{date}")]
         public IEnumerable<Showtime> GetByDate(DateTime? date)
         {
             return showtimeLogic.ReadByDate(date);

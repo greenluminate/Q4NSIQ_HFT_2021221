@@ -20,7 +20,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
             this.movieLogic = movieLogic;
         }
 
-        [HttpGet("{title}")]
+        [HttpGet("[action]/{title}")]
 
         public IEnumerable<Movie> GetByTitle(string title)
         {

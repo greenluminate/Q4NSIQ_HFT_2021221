@@ -20,7 +20,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
             this.movieHallLogic = movieHallLogic;
         }
 
-        [HttpGet("{category}")]
+        [HttpGet("[action]/{category}")]
 
         public IEnumerable<MovieHall> GetByCategory(string category)
         {
