@@ -34,22 +34,22 @@ namespace Q4NSIQ_HFT_2021221.Client
             switch (selectedIndex)
             {
                 case 0:
-                    RunMovieChoice();
+                    RunChoice<Movie>();
                     break;
                 case 1:
-                    RunMovieHallChoice();
+                    RunChoice<MovieHall>();
                     break;
                 case 2:
-                    RunSeatsChoice();
+                    RunChoice<Seats>();
                     break;
                 case 3:
-                    RunShowtimeChoice();
+                    RunChoice<Showtime>();
                     break;
                 case 4:
-                    RunStaffChoice();
+                    RunChoice<Staff>();
                     break;
                 case 5:
-                    RunTicketChoice();
+                    RunChoice<Ticket>();
                     break;
                 case 6:
                     ExitCinemaDatabase();
@@ -57,235 +57,20 @@ namespace Q4NSIQ_HFT_2021221.Client
             }
         }
 
-        public void RunSubMenuMovie(List<string> options, string prompt = null)
+        public void RunSubMenu<T>(List<string> options, string prompt)
         {
-            prompt = prompt ?? "Movie - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
-
             Menu mainMenu = new Menu(prompt, options);
 
             int selectedIndex = mainMenu.Run();
 
             Console.Clear();
 
-            switch (selectedIndex)
-            {
-                case 0:
-                    RunGetMovie();
-                    break;
-                case 1:
-                    RunGetMovies();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    RunDeleteMovie();
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    RunMainMenu();
-                    break;
-            }
+            RunSwitchCase<T>(selectedIndex);
 
             Console.WriteLine("\nPress any key to exit to the Movie menu...");
             Console.ReadKey(true);
 
-            RunMovieChoice();
-        }
-        public void RunSubMenuMovieHall(List<string> options, string prompt = null)
-        {
-            prompt = prompt ?? "Movie hall - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
-
-            Menu mainMenu = new Menu(prompt, options);
-
-            int selectedIndex = mainMenu.Run();
-
-            Console.Clear();
-
-            switch (selectedIndex)
-            {
-                case 0:
-                    RunGetMovieHall();
-                    break;
-                case 1:
-                    RunGetMovieHalls();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    RunDeleteMovieHall();
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    RunMainMenu();
-                    break;
-            }
-
-            Console.WriteLine("\nPress any key to exit to the Movie hall menu...");
-            Console.ReadKey(true);
-
-            RunMovieHallChoice();
-        }
-        public void RunSubMenuSeat(List<string> options, string prompt = null)
-        {
-            prompt = prompt ?? "Seat - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
-
-            Menu mainMenu = new Menu(prompt, options);
-
-            int selectedIndex = mainMenu.Run();
-
-            Console.Clear();
-
-            switch (selectedIndex)
-            {
-                case 0:
-                    RunGetSeat();
-                    break;
-                case 1:
-                    RunGetSeats();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    RunMainMenu();
-                    break;
-            }
-
-            Console.WriteLine("\nPress any key to exit to the Seat menu...");
-            Console.ReadKey(true);
-
-            RunSeatsChoice();
-        }
-        public void RunSubMenuShowtime(List<string> options, string prompt = null)
-        {
-            prompt = prompt ?? "Showtime - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
-
-            Menu mainMenu = new Menu(prompt, options);
-
-            int selectedIndex = mainMenu.Run();
-
-            Console.Clear();
-
-            switch (selectedIndex)
-            {
-                case 0:
-                    RunGetShowtime();
-                    break;
-                case 1:
-                    RunGetShowtimes();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    RunMainMenu();
-                    break;
-            }
-
-            Console.WriteLine("\nPress any key to exit to the Showtime menu...");
-            Console.ReadKey(true);
-
-            RunShowtimeChoice();
-        }
-        public void RunSubMenuStaff(List<string> options, string prompt = null)
-        {
-            prompt = prompt ?? "Staff - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
-
-            Menu mainMenu = new Menu(prompt, options);
-
-            int selectedIndex = mainMenu.Run();
-
-            Console.Clear();
-
-            switch (selectedIndex)
-            {
-                case 0:
-                    RunGetStaff();
-                    break;
-                case 1:
-                    RunGetStaffs();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                case 9:
-                    break;
-                case 10:
-                    break;
-                case 11:
-                    RunMainMenu();
-                    break;
-            }
-
-            Console.WriteLine("\nPress any key to exit to the Staff menu...");
-            Console.ReadKey(true);
-
-            RunStaffChoice();
-        }
-        public void RunSubMenuTicket(List<string> options, string prompt = null)
-        {
-            prompt = prompt ?? "Ticket - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
-
-            Menu mainMenu = new Menu(prompt, options);
-
-            int selectedIndex = mainMenu.Run();
-
-            Console.Clear();
-
-            switch (selectedIndex)
-            {
-                case 0:
-                    RunGetTicket();
-                    break;
-                case 1:
-                    RunGetTickets();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    RunMainMenu();
-                    break;
-            }
-
-            Console.WriteLine("\nPress any key to exit to the Ticket menu...");
-            Console.ReadKey(true);
-
-            RunTicketChoice();
+            RunChoice<T>();
         }
 
         private void ExitCinemaDatabase()
@@ -300,25 +85,25 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             List<string> uniqueOptions = new List<string>() { "Show movie(s) with given: Title" };
 
-            RunSubMenuMovie(RunUniqueOptionsGenerator("movie", uniqueOptions));
+            RunSubMenu<Movie>(RunUniqueOptionsGenerator("movie", uniqueOptions), RunUniquePromptGenerator("Movie"));
         }
         private void RunMovieHallChoice()
         {
             List<string> uniqueOptions = new List<string>() { "Show movie hall(s) with given: Category" };
 
-            RunSubMenuMovieHall(RunUniqueOptionsGenerator("movie hall", uniqueOptions));
+            RunSubMenu<MovieHall>(RunUniqueOptionsGenerator("movie hall", uniqueOptions), RunUniquePromptGenerator("Movie hall"));
         }
         private void RunSeatsChoice()
         {
             List<string> uniqueOptions = new List<string>() { "Show seat(s) with given: Movie Hall Id" };
 
-            RunSubMenuSeat(RunUniqueOptionsGenerator("seat", uniqueOptions));
+            RunSubMenu<Seats>(RunUniqueOptionsGenerator("seat", uniqueOptions), RunUniquePromptGenerator("Seat"));
         }
         private void RunShowtimeChoice()
         {
             List<string> uniqueOptions = new List<string>() { "Show showtime(s) at given: Date" };
 
-            RunSubMenuShowtime(RunUniqueOptionsGenerator("showtime", uniqueOptions));
+            RunSubMenu<Showtime>(RunUniqueOptionsGenerator("showtime", uniqueOptions), RunUniquePromptGenerator("Showtime"));
         }
         private void RunStaffChoice()
         {
@@ -332,15 +117,28 @@ namespace Q4NSIQ_HFT_2021221.Client
                 "Show which staff sold how many tickets for which type of movie hall"
             };
 
-            RunSubMenuStaff(RunUniqueOptionsGenerator("staff", uniqueOptions));
+            RunSubMenu<Staff>(RunUniqueOptionsGenerator("staff", uniqueOptions), RunUniquePromptGenerator("Staff"));
         }
         private void RunTicketChoice()
         {
             List<string> uniqueOptions = new List<string>() { "Show tickets wit given: Showtime Id", "Show the Top 10 Most Used Seats" };
 
-            RunSubMenuTicket(RunUniqueOptionsGenerator("ticket", uniqueOptions));
+            RunSubMenu<Ticket>(RunUniqueOptionsGenerator("ticket", uniqueOptions), RunUniquePromptGenerator("Ticket"));
         }
         #endregion
+        private void RunChoice<T>()
+        {
+            List<string> uniqueOptions = new List<string>() { $"Show {typeof(T).Name.ToLower()}s with given: Title" };
+
+            RunSubMenu<T>(RunUniqueOptionsGenerator($"{typeof(T).Name}", uniqueOptions), RunUniquePromptGenerator($"{typeof(T).Name}"));
+        }
+
+        private string RunUniquePromptGenerator(string objectName)
+        {
+            string prompt = $"{objectName} - Please choose a task You want to performe!\nPress: Up, Down Arrows and Enter keys";
+
+            return prompt;
+        }
         private List<string> RunUniqueOptionsGenerator(string objectName, List<string> uniqueOptions = null)
         {
             List<string> options = new List<string>() { $"Show {objectName} with given: Id", $"Show all {objectName}s", $"Reset {objectName} with given: Id", $"Add new {objectName}  with given: Id", $"Delet {objectName} given: Id" };
@@ -356,22 +154,36 @@ namespace Q4NSIQ_HFT_2021221.Client
             return options;
         }
 
-        #region RunTaskChoices
-
-        #region Movie
-        private void RunGetMovies()
+        private void RunSwitchCase<T>(int selectedIndex)
         {
-            var staffs = rest.Get<Movie>("movie");
 
-            foreach (var movie in staffs)
+            switch (selectedIndex)
             {
-                Console.WriteLine(movie);
+                case 0:
+                    RunGet<T>();
+                    break;
+                case 1:
+                    RunGets<T>();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    RunDelete<T>();
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    RunMainMenu();
+                    break;
             }
         }
 
-        private void RunGetMovie()
+        #region RunGenericChoices
+        private void RunGet<T>()
         {
-            Console.WriteLine("Please enter a movie Id!");
+            Console.WriteLine($"Please enter a {typeof(T).Name} Id!");
             int id = 0;
             try
             {
@@ -379,18 +191,29 @@ namespace Q4NSIQ_HFT_2021221.Client
             }
             catch (Exception)
             {
-                Console.WriteLine("A movie Id can only be a number!");
-                RunGetMovie();
+                Console.WriteLine($"A {typeof(T).Name} Id can only be a number!");
+                RunGet<T>();
             }
 
-            var movie = rest.GetSingle<Movie>($"movie/{id}");
+            var entity = rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}");
 
-            Console.WriteLine(movie);
+            Console.WriteLine(entity);
         }
 
-        private void RunDeleteMovie()
+        private void RunGets<T>()
         {
-            Console.WriteLine("Please enter a movie Id!");
+            Type type = typeof(T);
+            var entities = rest.Get<T>(type.Name.ToLower());
+
+            foreach (var entity in entities)
+            {
+                Console.WriteLine(entity);
+            }
+        }
+
+        private void RunDelete<T>()
+        {
+            Console.WriteLine($"Please enter a {typeof(T).Name.ToLower()} Id!");
             int id = 0;
             try
             {
@@ -399,18 +222,18 @@ namespace Q4NSIQ_HFT_2021221.Client
             catch (Exception e)
             {
                 Console.WriteLine(e.InnerException.Message);
-                Console.WriteLine("A movie Id can only be a number!");
-                RunGetMovie();
+                Console.WriteLine($"A {typeof(T).Name.ToLower()} Id can only be a number!");
+                RunDelete<T>();
             }
 
             try
             {
-                rest.Delete<Movie>($"movie/{id}");
+                rest.Delete<Movie>($"{typeof(T).Name.ToLower()}/{id}");
             }
             catch (NullReferenceException e)
             {
                 Console.WriteLine(e.Message);
-                Console.WriteLine("Movie with the enetered ID does not exists!");
+                Console.WriteLine($"{typeof(T).Name} with the enetered Id does not exists!");
             }
             catch (Exception e)
             {
@@ -418,197 +241,6 @@ namespace Q4NSIQ_HFT_2021221.Client
                 Console.WriteLine("Error occoured, please try again!");
             }
         }
-
-        #endregion
-
-        #region MovieHall
-
-        private void RunGetMovieHalls()
-        {
-            var movieHallss = rest.Get<MovieHall>("moviehall");
-
-            foreach (var movieHall in movieHallss)
-            {
-                Console.WriteLine(movieHall);
-            }
-        }
-
-        private void RunGetMovieHall()
-        {
-            Console.WriteLine("Please enter a movie hall Id!");
-            int id = 0;
-            try
-            {
-                id = int.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("A movie hall Id can only be a number!");
-                RunGetMovieHall();
-            }
-
-            var movieHall = rest.GetSingle<MovieHall>($"moviehall/{id}");
-
-            Console.WriteLine(movieHall);
-        }
-        private void RunDeleteMovieHall()
-        {
-            Console.WriteLine("Please enter a movie hall Id!");
-            int id = 0;
-            try
-            {
-                id = int.Parse(Console.ReadLine());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.InnerException.Message);
-                Console.WriteLine("A movie hall Id can only be a number!");
-                RunGetMovie();
-            }
-
-            try
-            {
-                rest.Delete<MovieHall>($"moviehall/{id}");
-            }
-            catch (NullReferenceException e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Movie hall with the enetered ID does not exists!");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.InnerException.Message);
-                Console.WriteLine("Error occoured, please try again!");
-            }
-        }
-        #endregion
-
-        #region Seat
-        private void RunGetSeats()
-        {
-            var seats = rest.Get<Seats>("seats");
-
-            foreach (var seat in seats)
-            {
-                Console.WriteLine(seat);
-            }
-        }
-
-        private void RunGetSeat()
-        {
-            Console.WriteLine("Please enter a seat Id!");
-            int id = 0;
-            try
-            {
-                id = int.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("A seat Id can only be a number!");
-                RunGetSeat();
-            }
-
-            var seat = rest.GetSingle<Seats>($"seats/{id}");
-
-            Console.WriteLine(seat);
-        }
-        #endregion
-
-        #region Showtime
-        private void RunGetShowtimes()
-        {
-            var showtimes = rest.Get<Showtime>("showtime");
-
-            foreach (var showtime in showtimes)
-            {
-                Console.WriteLine(showtime);
-            }
-        }
-
-        private void RunGetShowtime()
-        {
-            Console.WriteLine("Please enter a showtime Id!");
-            int id = 0;
-            try
-            {
-                id = int.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("A showtime Id can only be a number!");
-                RunGetShowtime();
-            }
-
-            var showtime = rest.GetSingle<Showtime>($"showtime/{id}");
-
-            Console.WriteLine(showtime);
-        }
-        #endregion
-
-        #region Staff
-        private void RunGetStaffs()
-        {
-            var staffs = rest.Get<Staff>("staff");
-
-            foreach (var staff in staffs)
-            {
-                Console.WriteLine(staff);
-            }
-        }
-
-        private void RunGetStaff()
-        {
-            Console.WriteLine("Please enter a staff Id!");
-            int id = 0;
-            try
-            {
-                id = int.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("A staff Id can only be a number!");
-                RunGetStaff();
-            }
-
-            var staff = rest.GetSingle<Staff>($"staff/{id}");
-
-            Console.WriteLine(staff);
-        }
-
-        #endregion
-
-        #region Ticket
-        private void RunGetTickets()
-        {
-            var tickets = rest.Get<Ticket>("movie");
-
-            foreach (var movie in tickets)
-            {
-                Console.WriteLine(movie);
-            }
-        }
-
-        private void RunGetTicket()
-        {
-            Console.WriteLine("Please enter a movie Id!");
-            int id = 0;
-            try
-            {
-                id = int.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("A movie Id can only be a number!");
-                RunGetTicket();
-            }
-
-            var movie = rest.GetSingle<Ticket>($"movie/{id}");
-
-            Console.WriteLine(movie);
-        }
-
-        #endregion
-
         #endregion
     }
 }
