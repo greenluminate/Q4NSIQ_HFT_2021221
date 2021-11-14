@@ -1,4 +1,5 @@
-﻿using Q4NSIQ_HFT_2021221.Data;
+﻿using Q4NSIQ_HFT_2021221.Models;
+using Q4NSIQ_HFT_2021221.Client;
 using System;
 using System.Linq;
 
@@ -8,7 +9,11 @@ namespace Q4NSIQ_HFT_2021221.Client
     {
         static void Main(string[] args)
         {
-            CinemaDbContext databse = new CinemaDbContext();
+            System.Threading.Thread.Sleep(8000);
+
+            MenuHelper menuHelper = new MenuHelper();
+            menuHelper.Start();
+
             ;
         }
     }

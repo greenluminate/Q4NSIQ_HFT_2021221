@@ -40,12 +40,12 @@ namespace Q4NSIQ_HFT_2021221.Data
                 .HasOne(showtime => showtime.Movie)
                 .WithMany(movie => movie.Showtimes)
                 .HasForeignKey(showtime => showtime.MovieId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
                 entity
                 .HasOne(showtime => showtime.MovieHall)
                 .WithMany(movieHall => movieHall.Showtimes)
                 .HasForeignKey(showtime => showtime.MovieHallId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Ticket>(entity =>
@@ -73,7 +73,7 @@ namespace Q4NSIQ_HFT_2021221.Data
                 .HasOne(seats => seats.MovieHall)
                 .WithMany(movieHall => movieHall.Seats)
                 .HasForeignKey(seats => seats.MovieHallId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             //Source: https://www.cinemacity.hu/cinemas/arena/1132?lang=en_GB#/buy-tickets-by-cinema?in-cinema=1132&at=2021-10-13&view-mode=list Downloaded: 2021.10.13.
