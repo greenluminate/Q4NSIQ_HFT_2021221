@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Q4NSIQ_HFT_2021221.Models;
@@ -34,22 +35,22 @@ namespace Q4NSIQ_HFT_2021221.Client
             switch (selectedIndex)
             {
                 case 0:
-                    RunChoice<Movie>();
+                    RunSubChoice<Movie>();
                     break;
                 case 1:
-                    RunChoice<MovieHall>();
+                    RunSubChoice<MovieHall>();
                     break;
                 case 2:
-                    RunChoice<Seats>();
+                    RunSubChoice<Seats>();
                     break;
                 case 3:
-                    RunChoice<Showtime>();
+                    RunSubChoice<Showtime>();
                     break;
                 case 4:
-                    RunChoice<Staff>();
+                    RunSubChoice<Staff>();
                     break;
                 case 5:
-                    RunChoice<Ticket>();
+                    RunSubChoice<Ticket>();
                     break;
                 case 6:
                     ExitCinemaDatabase();
@@ -70,7 +71,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             Console.WriteLine("\nPress any key to exit to the Movie menu...");
             Console.ReadKey(true);
 
-            RunChoice<T>();
+            RunSubChoice<T>();
         }
 
         private void ExitCinemaDatabase()
@@ -126,11 +127,29 @@ namespace Q4NSIQ_HFT_2021221.Client
             RunSubMenu<Ticket>(RunUniqueOptionsGenerator("ticket", uniqueOptions), RunUniquePromptGenerator("Ticket"));
         }
         #endregion
-        private void RunChoice<T>()
+        private void RunSubChoice<T>()
         {
-            List<string> uniqueOptions = new List<string>() { $"Show {typeof(T).Name.ToLower()}s with given: Title" };
-
-            RunSubMenu<T>(RunUniqueOptionsGenerator($"{typeof(T).Name}", uniqueOptions), RunUniquePromptGenerator($"{typeof(T).Name}"));
+            switch (typeof(T).Name)
+            {
+                case "Movie":
+                    RunMovieChoice();
+                    break;
+                case "MovieHall":
+                    RunMovieHallChoice();
+                    break;
+                case "Seats":
+                    RunSeatsChoice();
+                    break;
+                case "Showtime":
+                    RunShowtimeChoice();
+                    break;
+                case "Staff":
+                    RunStaffChoice();
+                    break;
+                case "Ticket":
+                    RunTicketChoice();
+                    break;
+            }
         }
 
         private string RunUniquePromptGenerator(string objectName)
@@ -166,8 +185,10 @@ namespace Q4NSIQ_HFT_2021221.Client
                     RunGets<T>();
                     break;
                 case 2:
+                    RunUpdate<T>();
                     break;
                 case 3:
+                    RunCreate<T>();
                     break;
                 case 4:
                     RunDelete<T>();
@@ -211,6 +232,139 @@ namespace Q4NSIQ_HFT_2021221.Client
             }
         }
 
+        private void RunCreate<T>()
+        {
+            Type type = typeof(T);
+            T newEntity = (T)Activator.CreateInstance(type);
+            var propertiesAll = type.GetProperties();
+            var properties = propertiesAll.Where(p => !p.PropertyType.AssemblyQualifiedName.Contains("ICollection") &&
+                                                      !p.PropertyType.AssemblyQualifiedName.Contains(".Models")).ToArray();
+
+            Console.WriteLine($"New {type.Name.ToLower()} - Please enter the following properties:");
+            for (int i = 1; i < properties.Length; i++)
+            {
+                var property = properties[i];
+
+                Console.WriteLine(property.Name);
+
+                var propertyType = property.PropertyType;
+                var parser = propertyType.GetMethods().FirstOrDefault(t => t.Name == "Parse");
+
+                bool doParse = true;
+                do
+                {
+                    string value = Console.ReadLine();
+                    if (parser != null)
+                    {
+                        try
+                        {
+                            var converted = parser
+                            .Invoke(null, new[] { value });
+
+                            property.SetValue(newEntity, converted);
+
+                            doParse = false;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.InnerException.Message);
+                            Console.WriteLine($"Please reenter the coveted {property.Name} value!");
+                        }
+                    }
+                    else
+                    {
+                        property.SetValue(newEntity, value);
+                        doParse = false;
+                    }
+
+                } while (doParse);
+            }
+
+            rest.Post(newEntity, $"{type.Name.ToLower()}");
+        }
+
+        private void RunUpdate<T>()
+        {
+            Type type = typeof(T);
+
+            Console.WriteLine($"Update {type.Name.ToLower()} - Please enter the {type.Name.ToLower()}'s Id You want to update!");
+
+            int id = 0;
+            try
+            {
+                id = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"A {typeof(T).Name} Id can only be a number!");
+                RunUpdate<T>();
+            }
+
+            var entity = rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}");
+
+            if (entity is null)
+            {
+                Console.WriteLine($"Please press 'y' if You want to enter another {typeof(T).Name.ToLower()} Id!");
+                Console.WriteLine($"Please press any other button if You want to exit to the main menu!");
+                string nextTask = Console.ReadKey().ToString();
+                if (nextTask.Trim() == "y")
+                {
+                    RunUpdate<T>();
+                }
+                else
+                {
+                    RunMainMenu();
+                }
+            }
+
+            var propertiesAll = type.GetProperties();
+            var properties = propertiesAll.Where(p => !p.PropertyType.AssemblyQualifiedName.Contains("ICollection") &&
+                                                      !p.PropertyType.AssemblyQualifiedName.Contains(".Models")).ToArray();
+
+            Console.WriteLine($"\nUpdate {type.Name.ToLower()} with the given Id: {id}\nPlease enter the following properties:");
+            for (int i = 1; i < properties.Length; i++)
+            {
+                var property = properties[i];
+                var value = entity.GetType().GetProperty(property.Name).GetValue(entity);
+                Console.WriteLine($"Property: {property.Name} CurrentValue: {value}");
+                Console.WriteLine("New value:");
+
+                var propertyType = property.PropertyType;
+                var parser = propertyType.GetMethods().FirstOrDefault(t => t.Name == "Parse");
+
+                bool doParse = true;
+                do
+                {
+                    string inputValue = Console.ReadLine();
+                    if (parser != null)
+                    {
+                        try
+                        {
+                            var converted = parser
+                            .Invoke(null, new[] { inputValue });
+
+                            property.SetValue(entity, converted);
+
+                            doParse = false;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.InnerException.Message);
+                            Console.WriteLine($"Please reenter the coveted {property.Name} value!");
+                        }
+                    }
+                    else
+                    {
+                        property.SetValue(entity, inputValue);
+                        doParse = false;
+                    }
+
+                } while (doParse);
+            }
+
+            rest.Put(entity, $"{type.Name.ToLower()}");
+        }
+
         private void RunDelete<T>()
         {
             Console.WriteLine($"Please enter a {typeof(T).Name.ToLower()} Id!");
@@ -241,6 +395,10 @@ namespace Q4NSIQ_HFT_2021221.Client
                 Console.WriteLine("Error occoured, please try again!");
             }
         }
+        #endregion
+
+        #region RunUniqueChoices
+        
         #endregion
     }
 }
