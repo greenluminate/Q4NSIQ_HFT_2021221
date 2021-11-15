@@ -113,7 +113,6 @@ namespace Q4NSIQ_HFT_2021221.Client
                 "Show staff(s) with given: Name",
                 "Show how many tickets have been sold by staff",
                 "Show the total amount of tickets sold by staff",
-                "Show the total value of tickets sold by staff",
                 "Show which staff sold the most tickets for which movie(s)",
                 "Show which staff sold how many tickets for which type of movie hall"
             };
@@ -175,7 +174,6 @@ namespace Q4NSIQ_HFT_2021221.Client
 
         private void RunSwitchCase<T>(int selectedIndex)
         {
-
             switch (selectedIndex)
             {
                 case 0:
@@ -193,13 +191,125 @@ namespace Q4NSIQ_HFT_2021221.Client
                 case 4:
                     RunDelete<T>();
                     break;
+                default:
+                    switch (typeof(T).Name)
+                    {
+                        case "Movie":
+                            RunMovieSwitchCase(selectedIndex);
+                            break;
+                        case "MovieHall":
+                            RunMovieHallSwitchCase(selectedIndex);
+                            break;
+                        case "Seats":
+                            RunSeatsSwitchCase(selectedIndex);
+                            break;
+                        case "Showtime":
+                            RunShowtimeSwitchCase(selectedIndex);
+                            break;
+                        case "Staff":
+                            RunStaffSwitchCase(selectedIndex);
+                            break;
+                        case "Ticket":
+                            RunTicketSwitchCase(selectedIndex);
+                            break;
+                    }
+                    break;
+            }
+        }
+
+        #region RunUniqueSwitchCase
+        private void RunMovieSwitchCase(int selectedIndex)
+        {
+            switch (selectedIndex)
+            {
                 case 5:
+                    MovieReadByTitle();
                     break;
                 case 6:
                     RunMainMenu();
                     break;
             }
         }
+
+        private void RunMovieHallSwitchCase(int selectedIndex)
+        {
+            switch (selectedIndex)
+            {
+                case 5:
+                    MovieHallReadByCategory();
+                    break;
+                case 6:
+                    RunMainMenu();
+                    break;
+            }
+        }
+
+        private void RunSeatsSwitchCase(int selectedIndex)
+        {
+            switch (selectedIndex)
+            {
+                case 5:
+                    SeatsReadByMovieHallId();
+                    break;
+                case 6:
+                    RunMainMenu();
+                    break;
+            }
+        }
+        private void RunShowtimeSwitchCase(int selectedIndex)
+        {
+            switch (selectedIndex)
+            {
+                case 5:
+                    ShowtimeReadByDate();
+                    break;
+                case 6:
+                    RunMainMenu();
+                    break;
+            }
+        }
+
+        private void RunStaffSwitchCase(int selectedIndex)
+        {
+            switch (selectedIndex)
+            {
+                case 5:
+                    StaffReadByName();
+                    break;
+                case 6:
+                    StaffCountOfSoldTicketsByStaff();
+                    break;
+                case 7:
+                    StaffSUMPriceOfSoldTicketsByStaff();
+                    break;
+                case 8:
+                    StaffTopSoldTicketsByStaffPerMovie();
+                    break;
+                case 9:
+                    StaffSoldTicketsByStaffPerHallType();
+                    break;
+                case 10:
+                    RunMainMenu();
+                    break;
+            }
+        }
+
+        private void RunTicketSwitchCase(int selectedIndex)
+        {
+            switch (selectedIndex)
+            {
+                case 5:
+                    TicketReadByShowtimeId();
+                    break;
+                case 6:
+                    TicketTop10MostUsedSeats();
+                    break;
+                case 7:
+                    RunMainMenu();
+                    break;
+            }
+        }
+        #endregion
 
         #region RunGenericChoices
         private void RunGet<T>()
@@ -397,8 +507,168 @@ namespace Q4NSIQ_HFT_2021221.Client
         }
         #endregion
 
-        #region RunUniqueChoices
-        
+        #region RunUniqueCRUDChoices
+        private void MovieReadByTitle()
+        {
+            Console.WriteLine($"Please enter a movie title!");
+
+            string movieTitle = Console.ReadLine();
+
+            var movies = rest.Get<Movie>($"movie/GetByTitle/{movieTitle}");
+
+            foreach (var movie in movies)
+            {
+                Console.WriteLine(movie);
+            }
+        }
+        private void MovieHallReadByCategory()
+        {
+            Console.WriteLine($"Please enter a movie hall category!");
+
+            string hallCategory = Console.ReadLine();
+
+            var halls = rest.Get<MovieHall>($"moviehall/GetByCategory/{hallCategory}");
+
+            foreach (var hall in halls)
+            {
+                Console.WriteLine(hall);
+            }
+        }
+
+        private void SeatsReadByMovieHallId()
+        {
+            Console.WriteLine($"Please enter a movie hall Id!");
+
+            int id = 0;
+            try
+            {
+                id = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"A movie hall Id can only be a number!");
+                SeatsReadByMovieHallId();
+            }
+
+            var seats = rest.Get<Seats>($"seats/GetByMovieHallId/{id}");
+
+            foreach (var seat in seats)
+            {
+                Console.WriteLine(seat);
+            }
+        }
+
+        private void ShowtimeReadByDate()
+        {
+            Console.WriteLine($"Please enter a date! E.g.: 2021.12.14 || 2021,12,14 || 2021-12-14");
+
+            string date = Console.ReadLine();
+            try
+            {
+                DateTime.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"A date can look like: 2021.12.14 or 2021,12,14 or 2021-12-14!");
+                ShowtimeReadByDate();
+            }
+
+            var shows = rest.Get<Showtime>($"showtime/GetByDate/{date}");
+
+            foreach (var show in shows)
+            {
+                Console.WriteLine(show);
+            }
+        }
+
+        private void StaffReadByName()
+        {
+            Console.WriteLine($"Please enter a staff name!");
+
+            string name = Console.ReadLine();
+
+            var staffs = rest.Get<Staff>($"staff/GetByName/{name}");
+
+            foreach (var staff in staffs)
+            {
+                Console.WriteLine(staff);
+            }
+        }
+
+        private void TicketReadByShowtimeId()
+        {
+            Console.WriteLine($"Please enter a showtime Id!");
+
+            int id = 0;
+            try
+            {
+                id = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"A showtime Id can only be a number!");
+                TicketReadByShowtimeId();
+            }
+
+            var tickets = rest.Get<Ticket>($"ticket/GetByShowtimeId/{id}");
+
+            foreach (var ticket in tickets)
+            {
+                Console.WriteLine(ticket);
+            }
+        }
+        #endregion
+
+        #region RunUniqueNONECRUDChoices
+        private void StaffCountOfSoldTicketsByStaff()
+        {
+            var entities = rest.Get<KeyValuePair<string, int>>("staff/CountOfSoldTicketsByStaff");
+
+            foreach (var entity in entities)
+            {
+                Console.WriteLine(entity);
+            }
+        }
+
+        private void StaffSUMPriceOfSoldTicketsByStaff()
+        {
+            var entities = rest.Get<KeyValuePair<string, int>>("staff/SUMPriceOfSoldTicketsByStaff");
+
+            foreach (var entity in entities)
+            {
+                Console.WriteLine(entity);
+            }
+        }
+
+        private void StaffTopSoldTicketsByStaffPerMovie()
+        {
+            var entities = rest.Get<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>("staff/TopSoldTicketsByStaffPerMovie");
+
+            foreach (var entity in entities)
+            {
+                Console.WriteLine(entity);
+            }
+        }
+
+        private void StaffSoldTicketsByStaffPerHallType()
+        {
+            var entities = rest.Get<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>("staff/SoldTicketsByStaffPerHallType");
+
+            foreach (var entity in entities)
+            {
+                Console.WriteLine(entity);
+            }
+        }
+
+        private void TicketTop10MostUsedSeats()
+        {
+            var entities = rest.Get<KeyValuePair<Seats, int>>("ticket/Top10MostUsedSeats");
+
+            foreach (var entity in entities)
+            {
+                Console.WriteLine(entity);
+            }
+        }
         #endregion
     }
 }
