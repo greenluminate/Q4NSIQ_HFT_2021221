@@ -21,9 +21,15 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
         }
 
         [HttpGet("[action]/{date}")]
-        public IEnumerable<Showtime> GetByDate(DateTime? date)
+        public IEnumerable<Showtime> GetByDate(DateTime date)
         {
             return showtimeLogic.ReadByDate(date);
+        }
+
+        [HttpGet("[action]/")]
+        public IEnumerable<Showtime> GetByDate(DateTime? date)
+        {
+            return showtimeLogic.ReadByDate(null);
         }
     }
 }

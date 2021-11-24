@@ -10,7 +10,6 @@ namespace Q4NSIQ_HFT_2021221.Client
 {
     public class MenuHelper
     {
-
         RestService rest;
         public MenuHelper()
         {
@@ -328,6 +327,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var entity = rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}");
 
+
             Console.WriteLine(entity);
         }
 
@@ -383,7 +383,14 @@ namespace Q4NSIQ_HFT_2021221.Client
                     }
                     else
                     {
-                        property.SetValue(newEntity, value);
+                        if (value == "" && Nullable.GetUnderlyingType(propertyType) != null)
+                        {
+                            property = null;
+                        }
+                        else
+                        {
+                            property.SetValue(newEntity, value);
+                        }
                         doParse = false;
                     }
 
@@ -465,7 +472,14 @@ namespace Q4NSIQ_HFT_2021221.Client
                     }
                     else
                     {
-                        property.SetValue(entity, inputValue);
+                        if (inputValue == "" && Nullable.GetUnderlyingType(propertyType) != null)
+                        {
+                            property = null;
+                        }
+                        else
+                        {
+                            property.SetValue(entity, inputValue);
+                        }
                         doParse = false;
                     }
 
@@ -563,17 +577,27 @@ namespace Q4NSIQ_HFT_2021221.Client
             Console.WriteLine($"Please enter a date! E.g.: 2021.12.14 || 2021,12,14 || 2021-12-14");
 
             string date = Console.ReadLine();
-            try
-            {
-                DateTime.Parse(Console.ReadLine());
-            }
-            catch (Exception)
-            {
-                Console.WriteLine($"A date can look like: 2021.12.14 or 2021,12,14 or 2021-12-14!");
-                ShowtimeReadByDate();
-            }
 
-            var shows = rest.Get<Showtime>($"showtime/GetByDate/{date}");
+            IEnumerable<Showtime> shows;
+            if (date == "")
+            {
+                date = null;
+                shows = rest.Get<Showtime>($"showtime/GetByDate/");
+            }
+            else
+            {
+                try
+                {
+                    DateTime.Parse(date);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"A date can look like: 2021.12.14 or 2021,12,14 or 2021-12-14!");
+                    ShowtimeReadByDate();
+                }
+
+                shows = rest.Get<Showtime>($"showtime/GetByDate/{date}");
+            }
 
             foreach (var show in shows)
             {
@@ -619,7 +643,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         }
         #endregion
 
-        #region RunUniqueNONECRUDChoices
+        #region RunNONECRUDChoices
         private void StaffCountOfSoldTicketsByStaff()
         {
             var entities = rest.Get<KeyValuePair<string, int>>("staff/CountOfSoldTicketsByStaff");

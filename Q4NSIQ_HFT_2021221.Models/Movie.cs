@@ -26,7 +26,20 @@ namespace Q4NSIQ_HFT_2021221.Models
         public string Languages { get; set; }
 
         [Required]
+        [JsonIgnore]
         public TimeSpan Duration { get; set; }
+
+        [NotMapped]
+        public long DurationTicks {
+            get
+            {
+                return Duration.Ticks;
+            }
+            set
+            {
+                Duration = TimeSpan.FromTicks(value);
+            }
+        }
 
         [RegularExpression("^NULL$|^[1-5]{1}$")]
         public int? Rating { get; set; }
@@ -52,10 +65,16 @@ namespace Q4NSIQ_HFT_2021221.Models
 
         public override int GetHashCode()
         {
+            //Ha az id-t nem tenném bele, akkor lehetne csekkolni updatenél azegyezőséget... De nem kellfeltétlen így.
             return MovieId * 59 +
                    MovieTitle.Length * 5 +
                    Languages.Length * 2 +
                    (int)Duration.TotalSeconds;
         }
+
+        /*public override string ToString()
+        {
+            return 
+        }*/
     }
 }

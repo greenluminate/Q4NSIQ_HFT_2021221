@@ -229,7 +229,7 @@ namespace Q4NSIQ_HFT_2021221.Data
 
             Showtime show25 = new Showtime() { ShowtimeId = 25, MovieHallId = movieHall1.MovieHallId, MovieId = movie8.MovieId, Date = new DateTime(2021, 10, 17, 12, 0, 0) };
             Showtime show26 = new Showtime() { ShowtimeId = 26, MovieHallId = movieHall1.MovieHallId, MovieId = movie9.MovieId, Date = new DateTime(2021, 10, 17, 16, 0, 0) };
-            Showtime show27 = new Showtime() { ShowtimeId = 27, MovieHallId = movieHall4.MovieHallId, MovieId = movie10.MovieId, Date = new DateTime(2021, 10, 17, 22, 0, 0) };
+            Showtime show27 = new Showtime() { ShowtimeId = 27, MovieHallId = movieHall4.MovieHallId, MovieId = movie10.MovieId, Date = DateTime.Today };
             #endregion
             modelBuilder
                 .Entity<Showtime>()
