@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -310,6 +311,26 @@ namespace Q4NSIQ_HFT_2021221.Client
         }
         #endregion
 
+        private void ConsoleWriter<T>(IEnumerable<T> entities)
+        {
+            Type type = typeof(T);
+            var properties = type.GetProperties().Where(prop => prop.GetCustomAttribute<NotMappedAttribute>() is null);
+            foreach (var property in properties)
+            {
+                Console.Write(property.Name + "\t");
+            }
+            Console.Write("\n");
+
+            foreach (var entity in entities)
+            {
+                foreach (var property in properties)
+                {
+                    Console.Write(property.GetValue(entity) + "\t");
+                }
+                Console.Write("\n");
+            }
+        }//Ha class a models rétegemből a type, akkor írja ki annak is foreac-csel az adatait.
+
         #region RunGenericChoices
         private void RunGet<T>()
         {
@@ -327,8 +348,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var entity = rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}");
 
-
-            Console.WriteLine(entity);
+            ConsoleWriter<T>(new List<T>() { (T)entity });
         }
 
         private void RunGets<T>()
@@ -336,10 +356,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             Type type = typeof(T);
             var entities = rest.Get<T>(type.Name.ToLower());
 
-            foreach (var entity in entities)
-            {
-                Console.WriteLine(entity);
-            }
+            ConsoleWriter(entities);
         }
 
         private void RunCreate<T>()
@@ -398,6 +415,12 @@ namespace Q4NSIQ_HFT_2021221.Client
             }
 
             rest.Post(newEntity, $"{type.Name.ToLower()}");
+
+            //It displays the last entity; Equals is not an option, because of the ID field in the hashes.
+            var entitites = rest.Get<T>($"{type.Name.ToLower()}");
+            var entityCount = entitites.Count;
+            ConsoleWriter(new List<T>() { entitites[entityCount - 1] });
+            Console.WriteLine("\nIf this is not the one record you have provided to the database,\nsomething went wreong during the Creation.");
         }
 
         private void RunUpdate<T>()
@@ -434,6 +457,8 @@ namespace Q4NSIQ_HFT_2021221.Client
                 }
             }
 
+            Console.WriteLine("You updated this record:\n\t");
+            ConsoleWriter(new List<T>() { rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}") });
             var propertiesAll = type.GetProperties();
             var properties = propertiesAll.Where(p => !p.PropertyType.AssemblyQualifiedName.Contains("ICollection") &&
                                                       !p.PropertyType.AssemblyQualifiedName.Contains(".Models")).ToArray();
@@ -487,6 +512,11 @@ namespace Q4NSIQ_HFT_2021221.Client
             }
 
             rest.Put(entity, $"{type.Name.ToLower()}");
+
+            Console.WriteLine("To this record:\n\t");
+            ConsoleWriter(new List<T>() { rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}") });
+
+            Console.WriteLine("\nIf there is no difference, something went wreong during the update.");
         }
 
         private void RunDelete<T>()
@@ -530,10 +560,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var movies = rest.Get<Movie>($"movie/GetByTitle/{movieTitle}");
 
-            foreach (var movie in movies)
-            {
-                Console.WriteLine(movie);
-            }
+            ConsoleWriter(movies);
         }
         private void MovieHallReadByCategory()
         {
@@ -543,10 +570,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var halls = rest.Get<MovieHall>($"moviehall/GetByCategory/{hallCategory}");
 
-            foreach (var hall in halls)
-            {
-                Console.WriteLine(hall);
-            }
+            ConsoleWriter(halls);
         }
 
         private void SeatsReadByMovieHallId()
@@ -566,10 +590,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var seats = rest.Get<Seats>($"seats/GetByMovieHallId/{id}");
 
-            foreach (var seat in seats)
-            {
-                Console.WriteLine(seat);
-            }
+            ConsoleWriter(seats);
         }
 
         private void ShowtimeReadByDate()
@@ -599,10 +620,7 @@ namespace Q4NSIQ_HFT_2021221.Client
                 shows = rest.Get<Showtime>($"showtime/GetByDate/{date}");
             }
 
-            foreach (var show in shows)
-            {
-                Console.WriteLine(show);
-            }
+            ConsoleWriter(shows);
         }
 
         private void StaffReadByName()
@@ -613,10 +631,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var staffs = rest.Get<Staff>($"staff/GetByName/{name}");
 
-            foreach (var staff in staffs)
-            {
-                Console.WriteLine(staff);
-            }
+            ConsoleWriter(staffs);
         }
 
         private void TicketReadByShowtimeId()
@@ -636,10 +651,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var tickets = rest.Get<Ticket>($"ticket/GetByShowtimeId/{id}");
 
-            foreach (var ticket in tickets)
-            {
-                Console.WriteLine(ticket);
-            }
+            ConsoleWriter(tickets);
         }
         #endregion
 
@@ -648,50 +660,35 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             var entities = rest.Get<KeyValuePair<string, int>>("staff/CountOfSoldTicketsByStaff");
 
-            foreach (var entity in entities)
-            {
-                Console.WriteLine(entity);
-            }
+            ConsoleWriter(entities);
         }
 
         private void StaffSUMPriceOfSoldTicketsByStaff()
         {
             var entities = rest.Get<KeyValuePair<string, int>>("staff/SUMPriceOfSoldTicketsByStaff");
 
-            foreach (var entity in entities)
-            {
-                Console.WriteLine(entity);
-            }
+            ConsoleWriter(entities);
         }
 
         private void StaffTopSoldTicketsByStaffPerMovie()
         {
             var entities = rest.Get<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>("staff/TopSoldTicketsByStaffPerMovie");
 
-            foreach (var entity in entities)
-            {
-                Console.WriteLine(entity);
-            }
+            ConsoleWriter(entities);
         }
 
         private void StaffSoldTicketsByStaffPerHallType()
         {
             var entities = rest.Get<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>("staff/SoldTicketsByStaffPerHallType");
 
-            foreach (var entity in entities)
-            {
-                Console.WriteLine(entity);
-            }
+            ConsoleWriter(entities);
         }
 
         private void TicketTop10MostUsedSeats()
         {
             var entities = rest.Get<KeyValuePair<Seats, int>>("ticket/Top10MostUsedSeats");
 
-            foreach (var entity in entities)
-            {
-                Console.WriteLine(entity);
-            }
+            ConsoleWriter(entities);
         }
         #endregion
     }
