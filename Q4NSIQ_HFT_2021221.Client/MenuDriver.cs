@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Client
 {
-    class Menu
+    class MenuDriver
     {
         private int SelectedIndex;
         private List<string> Options;
         private string Prompt;
 
-        public Menu(string prompt, List<string> options)
+        public MenuDriver(string prompt, List<string> options)
         {
             this.Prompt = prompt;
             this.Options = options;

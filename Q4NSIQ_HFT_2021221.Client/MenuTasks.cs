@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
@@ -9,10 +10,10 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Client
 {
-    public class MenuHelper
+    public class MenuTasks//MenuInteraction Külön? Bekér kiír? Lehet nem jó ötlet.
     {
         RestService rest;
-        public MenuHelper()
+        public MenuTasks()
         {
             this.rest = new RestService(@"http://localhost:17133"); ;
         }
@@ -28,7 +29,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             string prompt = "Please choose an item You want to work with!\nPress: Up, Down Arrows and Enter keys";
             List<string> options = new List<string>() { "Movies", "MovieHalls", "Seats", "Showtimes", "Staffs", "Tickets", "Exit" };
 
-            Menu mainMenu = new Menu(prompt, options);
+            MenuDriver mainMenu = new MenuDriver(prompt, options);
 
             int selectedIndex = mainMenu.Run();
 
@@ -60,7 +61,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
         public void RunSubMenu<T>(List<string> options, string prompt)
         {
-            Menu mainMenu = new Menu(prompt, options);
+            MenuDriver mainMenu = new MenuDriver(prompt, options);
 
             int selectedIndex = mainMenu.Run();
 
@@ -338,7 +339,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             int id = 0;
             try
             {
-                id = int.Parse(Console.ReadLine());
+                id = int.Parse(Console.ReadLine().Trim());
             }
             catch (Exception)
             {
@@ -380,7 +381,7 @@ namespace Q4NSIQ_HFT_2021221.Client
                 bool doParse = true;
                 do
                 {
-                    string value = Console.ReadLine();
+                    string value = Console.ReadLine().Trim();
                     if (parser != null)
                     {
                         try
@@ -427,12 +428,12 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             Type type = typeof(T);
 
-            Console.WriteLine($"Update {type.Name.ToLower()} - Please enter the {type.Name.ToLower()}'s Id You want to update!");
+            Console.WriteLine($"Update {type.Name.ToLower()} - Please enter the {type.Name.ToLower()}'s If You want to update!");
 
             int id = 0;
             try
             {
-                id = int.Parse(Console.ReadLine());
+                id = int.Parse(Console.ReadLine().Trim());
             }
             catch (Exception)
             {
@@ -457,18 +458,29 @@ namespace Q4NSIQ_HFT_2021221.Client
                 }
             }
 
-            Console.WriteLine("You updated this record:\n\t");
-            ConsoleWriter(new List<T>() { rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}") });
             var propertiesAll = type.GetProperties();
             var properties = propertiesAll.Where(p => !p.PropertyType.AssemblyQualifiedName.Contains("ICollection") &&
                                                       !p.PropertyType.AssemblyQualifiedName.Contains(".Models")).ToArray();
 
-            Console.WriteLine($"\nUpdate {type.Name.ToLower()} with the given Id: {id}\nPlease enter the following properties:");
+            Console.WriteLine("Instructions");
+            Console.WriteLine("Delete:\n\tPlease enter \"del\" if you vant to delete a not necessary value.");
+            Console.WriteLine("Leave:\n\tPlease leave it blank if you want to leave the property value as it is.");
+            Console.WriteLine("Update:\n\tPlease enter the property value if you want to update it.");
+
+            Console.WriteLine($"\nUpdate {type.Name.ToLower()} with the given Id: {id}\nPlease enter the following properties then press enter:");
             for (int i = 1; i < properties.Length; i++)
             {
                 var property = properties[i];
                 var value = entity.GetType().GetProperty(property.Name).GetValue(entity);
-                Console.WriteLine($"Property: {property.Name} CurrentValue: {value}");
+                var isRequired = property.GetCustomAttribute<RequiredAttribute>() != null;
+                if (isRequired)
+                {
+                    Console.WriteLine($"Property: {property.Name} CurrentValue: {value} [VALUE IS NECESSARY]");
+                }
+                else
+                {
+                    Console.WriteLine($"Property: {property.Name} CurrentValue: {value}");
+                }
                 Console.WriteLine("New value:");
 
                 var propertyType = property.PropertyType;
@@ -477,7 +489,7 @@ namespace Q4NSIQ_HFT_2021221.Client
                 bool doParse = true;
                 do
                 {
-                    string inputValue = Console.ReadLine();
+                    string inputValue = Console.ReadLine().Trim();
                     if (parser != null)
                     {
                         try
@@ -497,9 +509,13 @@ namespace Q4NSIQ_HFT_2021221.Client
                     }
                     else
                     {
-                        if (inputValue == "" && Nullable.GetUnderlyingType(propertyType) != null)
+                        if (inputValue == "del" && Nullable.GetUnderlyingType(propertyType) != null)
                         {
                             property = null;
+                        }
+                        else if (inputValue == "")
+                        {
+                            property.SetValue(entity, value);
                         }
                         else
                         {
@@ -511,9 +527,13 @@ namespace Q4NSIQ_HFT_2021221.Client
                 } while (doParse);
             }
 
+            Console.WriteLine("You have updated this record:\n\t");
+            ConsoleWriter(new List<T>() { rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}") });
+
             rest.Put(entity, $"{type.Name.ToLower()}");
 
-            Console.WriteLine("To this record:\n\t");
+
+            Console.WriteLine("\nTo this record:\n\t");
             ConsoleWriter(new List<T>() { rest.GetSingle<T>($"{typeof(T).Name.ToLower()}/{id}") });
 
             Console.WriteLine("\nIf there is no difference, something went wreong during the update.");
@@ -525,7 +545,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             int id = 0;
             try
             {
-                id = int.Parse(Console.ReadLine());
+                id = int.Parse(Console.ReadLine().Trim());
             }
             catch (Exception e)
             {
@@ -556,7 +576,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             Console.WriteLine($"Please enter a movie title!");
 
-            string movieTitle = Console.ReadLine();
+            string movieTitle = Console.ReadLine().Trim();
 
             var movies = rest.Get<Movie>($"movie/GetByTitle/{movieTitle}");
 
@@ -566,7 +586,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             Console.WriteLine($"Please enter a movie hall category!");
 
-            string hallCategory = Console.ReadLine();
+            string hallCategory = Console.ReadLine().Trim();
 
             var halls = rest.Get<MovieHall>($"moviehall/GetByCategory/{hallCategory}");
 
@@ -580,7 +600,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             int id = 0;
             try
             {
-                id = int.Parse(Console.ReadLine());
+                id = int.Parse(Console.ReadLine().Trim());
             }
             catch (Exception)
             {
@@ -597,7 +617,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             Console.WriteLine($"Please enter a date! E.g.: 2021.12.14 || 2021,12,14 || 2021-12-14");
 
-            string date = Console.ReadLine();
+            string date = Console.ReadLine().Trim();
 
             IEnumerable<Showtime> shows;
             if (date == "")
@@ -627,7 +647,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             Console.WriteLine($"Please enter a staff name!");
 
-            string name = Console.ReadLine();
+            string name = Console.ReadLine().Trim();
 
             var staffs = rest.Get<Staff>($"staff/GetByName/{name}");
 
@@ -641,7 +661,7 @@ namespace Q4NSIQ_HFT_2021221.Client
             int id = 0;
             try
             {
-                id = int.Parse(Console.ReadLine());
+                id = int.Parse(Console.ReadLine().Trim());
             }
             catch (Exception)
             {

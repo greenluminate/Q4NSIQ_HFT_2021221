@@ -32,6 +32,9 @@ namespace Q4NSIQ_HFT_2021221.Logic
                 var attributes = property.GetCustomAttributes(false).Where(attr => attr.GetType().FullName.Contains("ValidationAttribute")).ToArray();
                 var propertyValue = property.GetValue(obj);
 
+                //Ezt megnézni elég-e. Tehát áttenni emnuhelperbe
+                //objIsCreatable = attributes[0].GetType().GetCustomAttribute<ValidationAttribute>().IsValid(propertyValue);
+
                 int j = 0;
                 while (objIsCreatable && j < attributes.Length)
                 {

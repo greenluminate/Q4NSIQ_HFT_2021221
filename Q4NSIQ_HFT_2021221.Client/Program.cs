@@ -11,7 +11,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             System.Threading.Thread.Sleep(8000);
 
-            MenuHelper menuHelper = new MenuHelper();
+            MenuTasks menuHelper = new MenuTasks();
             menuHelper.Start();
 
             ;
