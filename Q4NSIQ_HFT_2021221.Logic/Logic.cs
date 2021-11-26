@@ -25,17 +25,21 @@ namespace Q4NSIQ_HFT_2021221.Logic
             var properties = type.GetProperties();
 
             bool objIsCreatable = true;
-            int i = 0;
+            int i = 1;
             while (objIsCreatable && i < properties.Length)
             {
                 var property = properties[i];
                 var attributes = property.GetCustomAttributes(false).Where(attr => attr.GetType().FullName.Contains("ValidationAttribute")).ToArray();
                 var propertyValue = property.GetValue(obj);
 
-                //Ezt megnézni elég-e. Tehát áttenni emnuhelperbe
-                //objIsCreatable = attributes[0].GetType().GetCustomAttribute<ValidationAttribute>().IsValid(propertyValue);
-
                 int j = 0;
+                while (objIsCreatable && j < attributes.Length)
+                {
+                    objIsCreatable = (attributes[j] as ValidationAttribute).IsValid(propertyValue);//Tesztelni
+                    j++;
+                }
+                
+                /*
                 while (objIsCreatable && j < attributes.Length)
                 {
                     var attribute = attributes[j];
@@ -43,17 +47,17 @@ namespace Q4NSIQ_HFT_2021221.Logic
 
                     if (atrrName.Contains("RegularExpression"))
                     {
-                        /*var pattern = attribute.GetType().GetCustomAttribute<RegularExpressionAttribute>().Pattern;
-                        bool isMatched = Regex.IsMatch(propertyValue.ToString(), pattern);
-                        objIsCreatable = isMatched;*/
+                        //var pattern = attribute.GetType().GetCustomAttribute<RegularExpressionAttribute>().Pattern;
+                        //bool isMatched = Regex.IsMatch(propertyValue.ToString(), pattern);
+                        //objIsCreatable = isMatched;
 
                         objIsCreatable = attribute.GetType().GetCustomAttribute<RegularExpressionAttribute>().IsValid(propertyValue);
                     }
                     else if (atrrName.Contains("Required"))
                     {
-                        /*bool isNotEmpty = propertyValue != null;
-                        isNotEmpty = propertyValue.GetType().Name.ToLower() == "string" ? (string)propertyValue != "" : true;
-                        objIsCreatable = isNotEmpty;*/
+                        //bool isNotEmpty = propertyValue != null;
+                        //isNotEmpty = propertyValue.GetType().Name.ToLower() == "string" ? (string)propertyValue != "" : true;
+                        //objIsCreatable = isNotEmpty;
 
                         objIsCreatable = attribute.GetType().GetCustomAttribute<RequiredAttribute>().IsValid(propertyValue);
                         objIsCreatable = propertyValue.GetType().Name.ToLower() == "string" ? (string)propertyValue != "" : true;
@@ -64,9 +68,8 @@ namespace Q4NSIQ_HFT_2021221.Logic
                     }
                     j++;
 
-                }
+                }*/
                 i++;
-
             }
 
             if (objIsCreatable)

@@ -372,8 +372,15 @@ namespace Q4NSIQ_HFT_2021221.Client
             for (int i = 1; i < properties.Length; i++)
             {
                 var property = properties[i];
-
-                Console.WriteLine(property.Name);
+                var isRequired = property.GetCustomAttribute<RequiredAttribute>() != null;
+                if (isRequired)
+                {
+                    Console.WriteLine($"{property.Name} [VALUE IS NECESSARY]");
+                }
+                else
+                {
+                    Console.WriteLine(property.Name);
+                }
 
                 var propertyType = property.PropertyType;
                 var parser = propertyType.GetMethods().FirstOrDefault(t => t.Name == "Parse");
@@ -414,14 +421,38 @@ namespace Q4NSIQ_HFT_2021221.Client
 
                 } while (doParse);
             }
+            
+            #region ChecksIfCreatable
+            bool objIsCreatable = true;
+            int j = 1;
+            while (objIsCreatable && j < properties.Length)
+            {
+                var property = properties[j];
+                var attributes = property.GetCustomAttributes(false).Where(attr => attr.GetType().BaseType.FullName.Contains("ValidationAttribute")).ToArray();
+                var propertyValue = property.GetValue(newEntity);
 
-            rest.Post(newEntity, $"{type.Name.ToLower()}");
+                int k = 0;
+                while (objIsCreatable && k < attributes.Length)
+                {
+                    objIsCreatable = (attributes[k] as ValidationAttribute).IsValid(propertyValue);
+                    k++;
+                }
+                j++;
+            }
+            #endregion
 
-            //It displays the last entity; Equals is not an option, because of the ID field in the hashes.
-            var entitites = rest.Get<T>($"{type.Name.ToLower()}");
-            var entityCount = entitites.Count;
-            ConsoleWriter(new List<T>() { entitites[entityCount - 1] });
-            Console.WriteLine("\nIf this is not the one record you have provided to the database,\nsomething went wreong during the Creation.");
+            if (objIsCreatable)
+            {
+                rest.Post(newEntity, $"{type.Name.ToLower()}");
+
+                var entitites = rest.Get<T>($"{type.Name.ToLower()}");
+                var entityCount = entitites.Count;
+                ConsoleWriter(new List<T>() { entitites[entityCount - 1] });
+            }
+            else
+            {
+                Console.WriteLine("\nCreation failed due to incorrect value(s).");
+            }
         }
 
         private void RunUpdate<T>()
