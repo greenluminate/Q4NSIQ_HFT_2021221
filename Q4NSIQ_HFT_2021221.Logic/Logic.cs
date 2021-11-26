@@ -1,14 +1,10 @@
-﻿using Q4NSIQ_HFT_2021221.Models;
-using Q4NSIQ_HFT_2021221.Repository;
+﻿using Q4NSIQ_HFT_2021221.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Q4NSIQ_HFT_2021221.Logic
 {

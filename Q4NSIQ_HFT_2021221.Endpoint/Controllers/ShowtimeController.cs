@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Models;
 

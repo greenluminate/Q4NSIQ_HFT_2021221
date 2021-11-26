@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Client

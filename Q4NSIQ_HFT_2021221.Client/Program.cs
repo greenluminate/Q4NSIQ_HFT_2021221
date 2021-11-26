@@ -1,7 +1,4 @@
-﻿using Q4NSIQ_HFT_2021221.Models;
-using Q4NSIQ_HFT_2021221.Client;
-using System;
-using System.Linq;
+﻿using System;
 
 namespace Q4NSIQ_HFT_2021221.Client
 {
@@ -15,8 +12,6 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             MenuTasks menuHelper = new MenuTasks();
             menuHelper.Start();
-
-            ;
         }
     }
 }
