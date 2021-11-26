@@ -310,6 +310,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         }
         #endregion
 
+        #region ConsoleWriters
         private void ConsoleWriter<T>(IEnumerable<T> entities)
         {
             if (entities.Count() == 0 || entities is null)
@@ -403,6 +404,7 @@ namespace Q4NSIQ_HFT_2021221.Client
                 }
             }
         }
+        #endregion
 
         #region RunGenericChoices
         private void RunGet<T>()
