@@ -328,13 +328,19 @@ namespace Q4NSIQ_HFT_2021221.Client
 
                 foreach (var entity in entities)
                 {
-                    foreach (var property in properties)
+                    if (entity != null)
                     {
-                        Console.Write(property.GetValue(entity) + "\t");
+                        foreach (var property in properties)
+                        {
+                            Console.Write(property.GetValue(entity) + "\t");
+                        }
+                        Console.Write("\n");
                     }
-                    Console.Write("\n");
+                    else
+                    {
+                        Console.WriteLine("The requested record has probably been deleted!");
+                    }
                 }
-
             }
         }
 
@@ -560,7 +566,7 @@ namespace Q4NSIQ_HFT_2021221.Client
                                                       !p.PropertyType.AssemblyQualifiedName.Contains(".Models")).ToArray();
 
             Console.WriteLine("Instructions");
-            Console.WriteLine("Delete:\n\tPlease enter \"del\" if you vant to delete a not necessary value.");
+            Console.WriteLine("Delete:\n\tPlease enter \"del\" if you want to delete a not necessary value.");
             Console.WriteLine("Leave:\n\tPlease leave it blank if you want to leave the property value as it is.");
             Console.WriteLine("Update:\n\tPlease enter the property value if you want to update it.");
 

@@ -50,17 +50,17 @@ namespace Q4NSIQ_HFT_2021221.Data
                 .HasOne(ticket => ticket.Showtime)
                 .WithMany(showtime => showtime.Tickets)
                 .HasForeignKey(ticket => ticket.ShowtimeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientSetNull);
                 entity
                 .HasOne(ticket => ticket.Staff)
                 .WithMany(staff => staff.Tickets)
                 .HasForeignKey(ticket => ticket.StaffId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientSetNull);
                 entity
                 .HasOne(ticket => ticket.Seat)
                 .WithMany(seat => seat.Tickets)
                 .HasForeignKey(ticket => ticket.SeatId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Seats>(entity =>
