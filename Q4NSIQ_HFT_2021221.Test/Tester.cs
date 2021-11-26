@@ -218,7 +218,11 @@ namespace Q4NSIQ_HFT_2021221.Test
             #region SetUp-Create
             mockMovieRepo.Setup(mmr => mmr.Create(It.IsAny<Movie>())).Callback<Movie>(movie => movies.Add(movie));
             mockMovieHallRepo.Setup(mmhr => mmhr.Create(It.IsAny<MovieHall>())).Callback<MovieHall>(movieHall => movieHalls.Add(movieHall));
-            mockMovieHallRepo.Setup(mmhr => mmhr.Create(It.IsAny<MovieHall>())).Throws<NullReferenceException>();
+            mockStaffRepo.Setup(str => str.Create(It.IsAny<Staff>())).Callback<Staff>(staff => staffs.Add(staff));
+
+            mockSeatsRepo.Setup(setr => setr.Create(It.IsAny<Seats>())).Callback<Seats>(seat => seats.Add(seat));
+            mockShowtimeRepo.Setup(shr => shr.Create(It.IsAny<Showtime>())).Callback<Showtime>(showtime => showtimes.Add(showtime));
+            mockTicketRepo.Setup(tr => tr.Create(It.IsAny<Ticket>())).Callback<Ticket>(ticket => tickets.Add(ticket));
             #endregion
 
             #region SetUp-Read
@@ -365,7 +369,7 @@ namespace Q4NSIQ_HFT_2021221.Test
                 AgeRestriction = 18,
                 Languages = "HU",
                 Duration = new TimeSpan(1, 52, 0),
-                Rating = 3,
+                Rating = 3
             };
 
             movieLogic.Create(newMovie);
@@ -373,16 +377,73 @@ namespace Q4NSIQ_HFT_2021221.Test
         }
 
         [Test]
+        public void IncorrectMovieCreateTest()
+        {
+            Movie newMovie = new Movie()
+            {
+                MovieId = 999,
+                Rating = 10
+            };
+
+            Assert.Throws(typeof(ArgumentException), () => movieLogic.Create(newMovie));
+        }
+
+        [Test]
+        public void IncorrectNameStaffCreateTest()
+        {
+            Staff newStaff = new Staff()
+            {
+                StaffId = 999,
+                Name = null
+            };
+
+            Assert.Throws(typeof(ArgumentException), () => staffLogic.Create(newStaff));
+        }
+
+        [Test]
+        public void IncorrectICStaffCreateTest()
+        {
+            Staff newStaff = new Staff()
+            {
+                StaffId = 999,
+                Name = "Elca Sale",
+                Gender = "",
+                IC = "123",
+                MobileNumber = "36302109876"
+            };
+
+            Assert.Throws(typeof(ArgumentException), () => staffLogic.Create(newStaff));
+        }
+
+        [Test]
+        public void IncorrectMobileStaffCreateTest()
+        {
+            Staff newStaff = new Staff()
+            {
+                StaffId = 999,
+                Name = "Elca Sale",
+                Gender = "",
+                IC = "666666HA",
+                MobileNumber = "112"
+            };
+
+            Assert.Throws(typeof(ArgumentException), () => staffLogic.Create(newStaff));
+        }
+
+        [Test]
         public void MovieHallCreatTest()
         {
             MovieHall newMovieHall = new MovieHall()
             {
-                MovieHallId = 6,
-                HallCategory = "3D"
+                MovieHallId = movieHallLogic.ReadAll().Count() + 1,
+                HallCategory = "3D",
+                NumberOfSeats = 30
             };
 
-            Assert.Throws(typeof(NullReferenceException), () => movieHallLogic.Create(newMovieHall));
+            movieHallLogic.Create(newMovieHall);
+            Assert.That(newMovieHall, Is.EqualTo(movieHallLogic.Read(newMovieHall.MovieHallId)));
         }
+
         #endregion
 
         #region UniqueCRUDTests

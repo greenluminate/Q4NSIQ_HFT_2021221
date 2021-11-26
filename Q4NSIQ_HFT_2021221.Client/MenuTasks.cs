@@ -10,12 +10,12 @@ using Q4NSIQ_HFT_2021221.Models;
 
 namespace Q4NSIQ_HFT_2021221.Client
 {
-    public class MenuTasks//MenuInteraction Külön? Bekér kiír? Lehet nem jó ötlet.
+    public class MenuTasks
     {
         RestService rest;
         public MenuTasks()
         {
-            this.rest = new RestService(@"http://localhost:17133"); ;
+            this.rest = new RestService(@"http://localhost:17133");
         }
 
         public void Start()
@@ -79,7 +79,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
-            Environment.Exit(0);//Ez így az enpoint folyamatát nem zárja be.
+            Environment.Exit(0);
         }
 
         #region RunMainChoises
@@ -160,7 +160,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         }
         private List<string> RunUniqueOptionsGenerator(string objectName, List<string> uniqueOptions = null)
         {
-            List<string> options = new List<string>() { $"Show {objectName} with given: Id", $"Show all {objectName}s", $"Reset {objectName} with given: Id", $"Add new {objectName}  with given: Id", $"Delet {objectName} given: Id" };
+            List<string> options = new List<string>() { $"Show {objectName} with given: Id", $"Show all {objectName}s", $"Reset {objectName} with given: Id", $"Add new {objectName}", $"Delet {objectName} with given: Id" };
             if (uniqueOptions != null)
             {
                 foreach (var option in uniqueOptions)
@@ -314,23 +314,91 @@ namespace Q4NSIQ_HFT_2021221.Client
 
         private void ConsoleWriter<T>(IEnumerable<T> entities)
         {
-            Type type = typeof(T);
-            var properties = type.GetProperties().Where(prop => prop.GetCustomAttribute<NotMappedAttribute>() is null);
-            foreach (var property in properties)
+            if (entities.Count() == 0 || entities is null)
             {
-                Console.Write(property.Name + "\t");
+                Console.WriteLine("There is no such record in the Cinema database.");
             }
-            Console.Write("\n");
-
-            foreach (var entity in entities)
+            else
             {
+                Type type = typeof(T);
+                var properties = type.GetProperties().Where(prop => prop.GetCustomAttribute<NotMappedAttribute>() is null);
                 foreach (var property in properties)
                 {
-                    Console.Write(property.GetValue(entity) + "\t");
+                    Console.Write(property.Name + "\t");
                 }
                 Console.Write("\n");
+
+                foreach (var entity in entities)
+                {
+                    foreach (var property in properties)
+                    {
+                        Console.Write(property.GetValue(entity) + "\t");
+                    }
+                    Console.Write("\n");
+                }
+
             }
-        }//Ha class a models rétegemből a type, akkor írja ki annak is foreac-csel az adatait.
+        }
+
+        private void ConsoleWriter<K, V>(IEnumerable<KeyValuePair<K, V>> keyValPairs)
+        {
+            if (keyValPairs.Count() == 0 || keyValPairs is null)
+            {
+                Console.WriteLine("There is no such record in the Cinema database.");
+            }
+            else
+            {
+                Type typeKey = typeof(K);
+                Type typeValue = typeof(V);
+                if (typeKey.FullName.Contains(".Models"))
+                {
+                    var typeKeyProps = typeKey.GetProperties().Where(prop => prop.GetCustomAttribute<NotMappedAttribute>() is null);
+                    foreach (var keyVal in keyValPairs)
+                    {
+                        Console.WriteLine($"Amount: {keyVal.Value}");
+
+                        foreach (var typeKeyProp in typeKeyProps)
+                        {
+                            Console.Write($"\t{typeKeyProp.Name}");
+                        }
+                        Console.WriteLine("\n");
+                        foreach (var typeKeyProp in typeKeyProps)
+                        {
+                            Console.Write("\t" + typeKeyProp.GetValue(keyVal.Key));
+                        }
+                        Console.WriteLine("\n--------------");
+                    }
+                }
+                else
+                {
+                    foreach (var keyVal in keyValPairs)
+                    {
+                        Console.WriteLine($"{keyVal.Key}: {keyVal.Value}");
+                    }
+                }
+            }
+        }
+
+        private void ConsoleWriter<K, SK, SV>(IEnumerable<KeyValuePair<K, IEnumerable<KeyValuePair<SK, SV>>>> keyValPairs)
+        {
+            if (keyValPairs.Count() == 0 || keyValPairs is null)
+            {
+                Console.WriteLine("There is no such record in the Cinema database.");
+            }
+            else
+            {
+                foreach (var keyVal in keyValPairs)
+                {
+                    Console.WriteLine($"{keyVal.Key}");
+
+                    foreach (var subKeyVal in keyVal.Value)
+                    {
+                        Console.Write($"\t{subKeyVal.Key}: {subKeyVal.Value}\n");
+                    }
+                    Console.WriteLine("\n--------------");
+                }
+            }
+        }
 
         #region RunGenericChoices
         private void RunGet<T>()
@@ -421,7 +489,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
                 } while (doParse);
             }
-            
+
             #region ChecksIfCreatable
             bool objIsCreatable = true;
             int j = 1;
@@ -710,7 +778,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         private void StaffCountOfSoldTicketsByStaff()
         {
             var entities = rest.Get<KeyValuePair<string, int>>("staff/CountOfSoldTicketsByStaff");
-
+            Console.WriteLine("Number of tickets sold per staff");
             ConsoleWriter(entities);
         }
 
@@ -718,6 +786,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             var entities = rest.Get<KeyValuePair<string, int>>("staff/SUMPriceOfSoldTicketsByStaff");
 
+            Console.WriteLine("Amount of ticket sales price per staff");
             ConsoleWriter(entities);
         }
 
@@ -725,6 +794,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             var entities = rest.Get<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>("staff/TopSoldTicketsByStaffPerMovie");
 
+            Console.WriteLine("Top sold tickets by staff per movie");
             ConsoleWriter(entities);
         }
 
@@ -732,6 +802,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             var entities = rest.Get<KeyValuePair<string, IEnumerable<KeyValuePair<string, int>>>>("staff/SoldTicketsByStaffPerHallType");
 
+            Console.WriteLine("Sold tickets by staff per halltype");
             ConsoleWriter(entities);
         }
 
@@ -739,6 +810,7 @@ namespace Q4NSIQ_HFT_2021221.Client
         {
             var entities = rest.Get<KeyValuePair<Seats, int>>("ticket/Top10MostUsedSeats");
 
+            Console.WriteLine("Top 10 most used seats");
             ConsoleWriter(entities);
         }
         #endregion

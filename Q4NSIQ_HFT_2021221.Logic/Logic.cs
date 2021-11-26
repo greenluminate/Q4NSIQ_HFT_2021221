@@ -3,6 +3,7 @@ using Q4NSIQ_HFT_2021221.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -22,59 +23,36 @@ namespace Q4NSIQ_HFT_2021221.Logic
         public void Create(TEntity obj)
         {
             Type type = obj.GetType();
-            var properties = type.GetProperties();
+            var properties = type.GetProperties().Where(p => p.GetCustomAttribute<NotMappedAttribute>() is null).ToArray();
 
             bool objIsCreatable = true;
-            int i = 1;
+            int i = 0;
+            var property = properties[i];
+            var propertyValue = property.GetValue(obj);
             while (objIsCreatable && i < properties.Length)
             {
-                var property = properties[i];
-                var attributes = property.GetCustomAttributes(false).Where(attr => attr.GetType().FullName.Contains("ValidationAttribute")).ToArray();
-                var propertyValue = property.GetValue(obj);
+                property = properties[i];
+                var attributes = property.GetCustomAttributes(false).Where(attr => attr.GetType().BaseType.FullName.Contains("ValidationAttribute")).ToArray();
+                propertyValue = property.GetValue(obj);
 
                 int j = 0;
                 while (objIsCreatable && j < attributes.Length)
                 {
-                    objIsCreatable = (attributes[j] as ValidationAttribute).IsValid(propertyValue);//Tesztelni
+                    objIsCreatable = (attributes[j] as ValidationAttribute).IsValid(propertyValue);
+
                     j++;
                 }
-                
-                /*
-                while (objIsCreatable && j < attributes.Length)
-                {
-                    var attribute = attributes[j];
-                    string atrrName = attribute.GetType().Name;
 
-                    if (atrrName.Contains("RegularExpression"))
-                    {
-                        //var pattern = attribute.GetType().GetCustomAttribute<RegularExpressionAttribute>().Pattern;
-                        //bool isMatched = Regex.IsMatch(propertyValue.ToString(), pattern);
-                        //objIsCreatable = isMatched;
-
-                        objIsCreatable = attribute.GetType().GetCustomAttribute<RegularExpressionAttribute>().IsValid(propertyValue);
-                    }
-                    else if (atrrName.Contains("Required"))
-                    {
-                        //bool isNotEmpty = propertyValue != null;
-                        //isNotEmpty = propertyValue.GetType().Name.ToLower() == "string" ? (string)propertyValue != "" : true;
-                        //objIsCreatable = isNotEmpty;
-
-                        objIsCreatable = attribute.GetType().GetCustomAttribute<RequiredAttribute>().IsValid(propertyValue);
-                        objIsCreatable = propertyValue.GetType().Name.ToLower() == "string" ? (string)propertyValue != "" : true;
-                    }
-                    else if (atrrName.Contains("StringLength"))
-                    {
-                        objIsCreatable = attribute.GetType().GetCustomAttribute<StringLengthAttribute>().IsValid(propertyValue);
-                    }
-                    j++;
-
-                }*/
                 i++;
             }
 
             if (objIsCreatable)
             {
                 repo.Create(obj);
+            }
+            else
+            {
+                throw new ArgumentException($"Given parameter is inadequate! {property.Name}: {propertyValue}");
             }
         }
 

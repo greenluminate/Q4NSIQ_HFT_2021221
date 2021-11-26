@@ -30,7 +30,8 @@ namespace Q4NSIQ_HFT_2021221.Models
         public TimeSpan Duration { get; set; }
 
         [NotMapped]
-        public long DurationTicks {
+        public long DurationTicks
+        {
             get
             {
                 return Duration.Ticks;
@@ -65,16 +66,10 @@ namespace Q4NSIQ_HFT_2021221.Models
 
         public override int GetHashCode()
         {
-            //Ha az id-t nem tenném bele, akkor lehetne csekkolni updatenél azegyezőséget... De nem kellfeltétlen így.
             return MovieId * 59 +
                    MovieTitle.Length * 5 +
                    Languages.Length * 2 +
                    (int)Duration.TotalSeconds;
         }
-
-        /*public override string ToString()
-        {
-            return 
-        }*/
     }
 }
