@@ -64,7 +64,38 @@ namespace Q4NSIQ_HFT_2021221.Logic
 
         public void Update(TEntity obj)
         {
-            repo.Update(obj);
+            Type type = obj.GetType();
+            var properties = type.GetProperties().Where(p => p.GetCustomAttribute<NotMappedAttribute>() is null).ToArray();
+
+            bool objIsCreatable = true;
+            int i = 0;
+            var property = properties[i];
+            var propertyValue = property.GetValue(obj);
+            while (objIsCreatable && i < properties.Length)
+            {
+                property = properties[i];
+                var attributes = property.GetCustomAttributes(false).Where(attr => attr.GetType().BaseType.FullName.Contains("ValidationAttribute")).ToArray();
+                propertyValue = property.GetValue(obj);
+
+                int j = 0;
+                while (objIsCreatable && j < attributes.Length)
+                {
+                    objIsCreatable = (attributes[j] as ValidationAttribute).IsValid(propertyValue);
+
+                    j++;
+                }
+
+                i++;
+            }
+
+            if (objIsCreatable)
+            {
+                repo.Update(obj);
+            }
+            else
+            {
+                throw new ArgumentException($"Given parameter is inadequate! {property.Name}: {propertyValue}");
+            }
         }
 
         public void Delete(int id)
