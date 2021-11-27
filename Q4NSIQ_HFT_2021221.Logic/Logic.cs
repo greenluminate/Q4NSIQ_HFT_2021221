@@ -102,7 +102,18 @@ namespace Q4NSIQ_HFT_2021221.Logic
         {
             if (Read(id) != null)
             {
-                repo.Delete(id);
+                try
+                {
+                    repo.Delete(id);
+                }
+                catch (Exception)
+                {
+                    throw new Exception($"You can not delete a record that is strictly bound with other records.");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException($"There is no record matching the specified data (ID: {id}) to delete.");
             }
         }
     }
