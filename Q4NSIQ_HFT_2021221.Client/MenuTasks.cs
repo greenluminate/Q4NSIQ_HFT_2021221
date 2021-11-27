@@ -595,7 +595,18 @@ namespace Q4NSIQ_HFT_2021221.Client
                 do
                 {
                     string inputValue = Console.ReadLine().Trim();
-                    if (parser != null)
+
+                    if (inputValue == "")
+                    {
+                        property.SetValue(entity, value);
+                        doParse = false;
+                    }
+                    else if (inputValue == "del" && Nullable.GetUnderlyingType(propertyType) != null)
+                    {
+                        property = null;
+                        doParse = false;
+                    }
+                    else if (parser != null)
                     {
                         try
                         {
@@ -614,18 +625,7 @@ namespace Q4NSIQ_HFT_2021221.Client
                     }
                     else
                     {
-                        if (inputValue == "del" && Nullable.GetUnderlyingType(propertyType) != null)
-                        {
-                            property = null;
-                        }
-                        else if (inputValue == "")
-                        {
-                            property.SetValue(entity, value);
-                        }
-                        else
-                        {
-                            property.SetValue(entity, inputValue);
-                        }
+                        property.SetValue(entity, inputValue);
                         doParse = false;
                     }
 
