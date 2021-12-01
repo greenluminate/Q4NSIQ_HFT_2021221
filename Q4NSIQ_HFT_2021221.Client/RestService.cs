@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace Q4NSIQ_HFT_2021221.Client
 {
-    class RestService
+    class RestService : IRestService
     {
         HttpClient client;
 

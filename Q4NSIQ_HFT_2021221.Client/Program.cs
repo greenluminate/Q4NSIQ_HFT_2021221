@@ -9,8 +9,9 @@ namespace Q4NSIQ_HFT_2021221.Client
             Console.WriteLine("Hello!");
             Console.WriteLine(@"POSTMAN invite link: https://app.getpostman.com/join-team?invite_code=0279391ad6191a2a9dd581246b082782");
             System.Threading.Thread.Sleep(8000);
-
-            MenuTasks menuHelper = new MenuTasks();
+            
+            IRestService restService = new RestService(@"http://localhost:17133");
+            MenuTasks menuHelper = new MenuTasks(restService);
             menuHelper.Start();
         }
     }

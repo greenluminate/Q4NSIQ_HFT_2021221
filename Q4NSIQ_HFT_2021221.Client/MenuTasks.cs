@@ -10,10 +10,10 @@ namespace Q4NSIQ_HFT_2021221.Client
 {
     public class MenuTasks
     {
-        RestService rest;
-        public MenuTasks()
+        IRestService rest;
+        public MenuTasks(IRestService rest)
         {
-            this.rest = new RestService(@"http://localhost:17133");
+            this.rest = rest;
         }
 
         public void Start()
