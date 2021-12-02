@@ -565,7 +565,8 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             var propertiesAll = type.GetProperties();
             var properties = propertiesAll.Where(p => !p.PropertyType.AssemblyQualifiedName.Contains("ICollection") &&
-                                                      !p.PropertyType.AssemblyQualifiedName.Contains(".Models")).ToArray();
+                                                      !p.PropertyType.AssemblyQualifiedName.Contains(".Models") &&
+                                                      p.GetCustomAttribute<NotMappedAttribute>() is null ).ToArray();
 
             Console.WriteLine("Instructions");
             Console.WriteLine("Delete:\n\tPlease enter \"del\" if you want to delete a not necessary value.");
@@ -601,9 +602,9 @@ namespace Q4NSIQ_HFT_2021221.Client
                         property.SetValue(entity, value);
                         doParse = false;
                     }
-                    else if (inputValue == "del" && Nullable.GetUnderlyingType(propertyType) != null)
+                    else if (inputValue.Equals("del") && !isRequired)
                     {
-                        property = null;
+                        property.SetValue(entity, null);
                         doParse = false;
                     }
                     else if (parser != null)
@@ -625,8 +626,15 @@ namespace Q4NSIQ_HFT_2021221.Client
                     }
                     else
                     {
-                        property.SetValue(entity, inputValue);
-                        doParse = false;
+                        if (inputValue.Equals("del"))
+                        {
+                            Console.WriteLine($"You have to provide a valid {property.Name} value!");
+                        }
+                        else
+                        {
+                            property.SetValue(entity, inputValue);
+                            doParse = false;
+                        }
                     }
 
                 } while (doParse);
