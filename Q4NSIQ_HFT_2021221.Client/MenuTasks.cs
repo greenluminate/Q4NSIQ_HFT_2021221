@@ -666,7 +666,7 @@ namespace Q4NSIQ_HFT_2021221.Client
 
             try
             {
-                rest.Delete<Movie>($"{typeof(T).Name.ToLower()}/{id}");
+                rest.Delete<T>($"{typeof(T).Name.ToLower()}/{id}");
             }
             catch (NullReferenceException)
             {
