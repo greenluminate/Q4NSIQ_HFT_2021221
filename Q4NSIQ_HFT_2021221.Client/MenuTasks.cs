@@ -474,9 +474,8 @@ namespace Q4NSIQ_HFT_2021221.Client
 
                             doParse = false;
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
-                            Console.WriteLine(e.InnerException.Message);
                             Console.WriteLine($"Please reenter the coveted {property.Name} value!");
                         }
                     }
@@ -618,9 +617,8 @@ namespace Q4NSIQ_HFT_2021221.Client
 
                             doParse = false;
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
-                            Console.WriteLine(e.InnerException.Message);
                             Console.WriteLine($"Please reenter the coveted {property.Name} value!");
                         }
                     }
@@ -660,9 +658,8 @@ namespace Q4NSIQ_HFT_2021221.Client
             {
                 id = int.Parse(Console.ReadLine().Trim());
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.InnerException.Message);
                 Console.WriteLine($"A {typeof(T).Name.ToLower()} Id can only be a number!");
                 RunDelete<T>();
             }
@@ -671,14 +668,13 @@ namespace Q4NSIQ_HFT_2021221.Client
             {
                 rest.Delete<Movie>($"{typeof(T).Name.ToLower()}/{id}");
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
-                Console.WriteLine(e.Message);
                 Console.WriteLine($"{typeof(T).Name} with the enetered Id does not exists!");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.InnerException.Message);
+                Console.WriteLine(e.InnerException.Message ?? "");
                 Console.WriteLine("Error occoured, please try again!");
             }
         }
