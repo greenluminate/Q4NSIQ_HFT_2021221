@@ -601,9 +601,9 @@ namespace Q4NSIQ_HFT_2021221.Client
                         property.SetValue(entity, value);
                         doParse = false;
                     }
-                    else if (inputValue == "del" && Nullable.GetUnderlyingType(propertyType) != null)
+                    else if (inputValue.Equals("del") && !isRequired)
                     {
-                        property = null;
+                        property.SetValue(entity, null);
                         doParse = false;
                     }
                     else if (parser != null)
