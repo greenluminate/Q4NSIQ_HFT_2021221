@@ -11,7 +11,6 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
 {
     public class Startup
     {
-        //POSTMAN invite link: https://app.getpostman.com/join-team?invite_code=0279391ad6191a2a9dd581246b082782
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -62,6 +61,14 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x => x
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("http://localhost:7172"));
+
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -69,11 +76,6 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
                 endpoints.MapControllers();
             });
 
-            app.UseCors(x => x
-                .AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .WithOrigins("http://localhost:17133"));
         }
     }
 }
