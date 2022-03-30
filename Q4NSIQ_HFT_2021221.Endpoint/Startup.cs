@@ -68,6 +68,12 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors(x => x
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("http://localhost:17133"));
         }
     }
 }
