@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace Q4NSIQ_HFT_2021221.WpfClient
 {
-    public class GenericViewModel<T> : ObservableRecipient where T : class
+    public class GenericViewModel<T> : MainWindowViewModel
     {
         private RestCollection<T> entities;
         public RestCollection<T> Entities { get { return entities; } set { this.entities = value; OnPropertyChanged(); } }
@@ -42,9 +42,9 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public GenericViewModel(string url, string hub)
+        public GenericViewModel(ref RestCollection<T> entities, string url, string hub)
         {
-            Entities = new RestCollection<T>(url, null, hub);
+            this.Entities = entities;
 
             CreateCommand = new RelayCommand(
             () => { AddEntityToRestColelction(); });
