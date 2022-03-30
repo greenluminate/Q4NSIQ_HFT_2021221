@@ -10,6 +10,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
 {
     public class MainWindowViewModel : ObservableRecipient
     {
+        public MainWindowViewModel Self { get {return this;} private set {} }
         //GenericModel have to use these to not to recreate them all the time from scratch when we change model.
         public RestCollection<Movie> movies;
         public RestCollection<Movie> Movies { get { return this.movies; } set { this.movies = value; } }
@@ -42,8 +43,29 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             get { return hub; }
             private set { hub = value; }
         }
+        public string[] ClassNames
+        {
+            get { return new string[] { "Movie", "MovieHall", "Seats", "Showtime", "Staff", "Ticket" }; }
+            private set { }
+        }
 
-        public object GenericViewModel { get; private set; }
+        private object selectedObjectString;
+        public object SelectedObjectString//Selected Menu -> ELidnTjuk manuálisan mint a parancssorosnál a kieg modellben és kész onna ngenerikus, csak dynamic load kell ,de az amúgy is kell innek küldük a zadatokat a xaml.cs pedig megeszi amit megkap és felépíti a viewt.
+        {
+            get
+            {
+                return selectedObjectString;
+            }
+            set
+            {
+                SetProperty(ref selectedObjectString, value);
+                createGenericViewModel(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public object genericViewModel;
+        public object GenericViewModel { get { return genericViewModel; } private set { this.genericViewModel = value; OnPropertyChanged(); } }
 
         private void createGenericViewModel(object menuObj)
         {
@@ -74,6 +96,13 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         {
             this.url = "http://localhost:17133/";
             this.hub = "hub";
+
+            movies = new RestCollection<Movie>(Url, null, Hub);
+            movieHalls = new RestCollection<MovieHall>(Url, null, Hub);
+            seats = new RestCollection<Seats>(Url, null, Hub);
+            showtimes = new RestCollection<Showtime>(Url, null, Hub);
+            staffs = new RestCollection<Staff>(Url, null, Hub);
+            tickets = new RestCollection<Ticket>(Url, null, Hub);
         }
     }
 }

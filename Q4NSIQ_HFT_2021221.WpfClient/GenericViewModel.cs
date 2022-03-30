@@ -58,7 +58,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             );
 
             //Maybe it will be necessary to set a selected entity:
-            //selectedEntitiy = entities.GetEnumerator().Current;
+            selectedEntitiy = (T)Entities.GetEnumerator().Current;
             //selectedEntitiy = (T)Activator.CreateInstance(typeof(T));
         }
 

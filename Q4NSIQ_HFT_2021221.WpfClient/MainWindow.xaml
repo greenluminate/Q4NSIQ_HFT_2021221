@@ -6,7 +6,24 @@
         xmlns:local="clr-namespace:Q4NSIQ_HFT_2021221.WpfClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid x:Name="grid_main">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Column="0" x:Name="tc_menu" ItemsSource="{Binding ClassNames, Mode=OneTime}" SelectedItem="{Binding SelectedObjectString, Mode=OneWayToSource}" TabStripPlacement="Left" SelectionChanged="tc_menu_SelectionChanged">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Loaded="StackPanel_Loaded">
+                        <TextBlock Text="{Binding}" Foreground="Blue" FontSize="14" Selector.IsSelected="True" Loaded="TextBlock_Loaded"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
     </Grid>
 </Window>
