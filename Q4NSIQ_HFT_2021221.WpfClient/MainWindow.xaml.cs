@@ -23,7 +23,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        //int index = 0;
+        int index = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,33 +31,85 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
 
         private void tc_menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //var asd = sender;
+            //if (sender is TabControl)
+            //{
+            //    string templateString =
+            //        "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
+            //            "<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
+            //                "<ListBox.ItemTemplate>" +
+            //                    "<DataTemplate>" +
+            //                        "<StackPanel>";
+
+            //    List<PropertyInfo> properties = (List<PropertyInfo>)((DataContext as MainWindowViewModel).GenericViewModel.GetType().GetMethod("GetTModelProperties").Invoke((DataContext as MainWindowViewModel).GenericViewModel, null));
+
+            //    properties.ForEach(prop => templateString += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>");
+
+            //    templateString +=
+            //                        "</StackPanel>" +
+            //                    "</DataTemplate>" +
+            //                "</ListBox.ItemTemplate>" +
+            //            "</ListBox>" +
+            //        "</DataTemplate>";
+            //    //ParserContext pc = new ParserContext();
+            //    //pc.XmlnsDictionary.Add("", @"http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            //    //pc.XmlnsDictionary.Add("x", @"http://schemas.microsoft.com/winfx/2006/xaml\");
+
+            //    var ms = new MemoryStream(Encoding.UTF8.GetBytes(templateString));
+
+            //    //var template = (DataTemplate)XamlReader.Load(ms, pc);
+            //    var template = (DataTemplate)XamlReader.Load(ms);
+            //    tc_menu.ContentTemplate = template;
+            //}
+            //;
         }
 
-        private void StackPanel_Loaded(object sender, RoutedEventArgs e)
+        private void TextBlock_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
-        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        private void stack_menu_Loaded(object sender, RoutedEventArgs e)
         {
-            //(DataContext as MainWindowViewModel).SelectedObjectString = (sender as TextBlock).Text;
+            //var a = sender;
             //(DataContext as MainWindowViewModel).SelectedObjectString = (DataContext as MainWindowViewModel).ClassNames[index++];
-            //        "<DataTemplate>" +
-            //"<DataTemplate.Resources>" +
-            //    "<local:MainWindowViewModel x:Key=\"main\"/>" +
-            //"</DataTemplate.Resources>" +
-            //"<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding Source={StaticResource main}, Path=GenericViewModel.Entities}\" SelectedItem=\"{Binding Source={StaticResource main}, Path=GenericViewModel.SelectedEntitiy}\">" +
-            //    "<ListBox.ItemTemplate>" +
-            //        "<DataTemplate>" +
-            //            "<StackPanel>";
+            //string templateString =
+            //    "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
+            //        "<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
+            //            "<ListBox.ItemTemplate>" +
+            //                "<DataTemplate>" +
+            //                    "<StackPanel>";
 
+            //List<PropertyInfo> properties = (List<PropertyInfo>)((DataContext as MainWindowViewModel).GenericViewModel.GetType().GetMethod("GetTModelProperties").Invoke((DataContext as MainWindowViewModel).GenericViewModel, null));
+
+            //properties.ForEach(prop => templateString += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>");
+
+            //templateString +=
+            //                    "</StackPanel>" +
+            //                "</DataTemplate>" +
+            //            "</ListBox.ItemTemplate>" +
+            //        "</ListBox>" +
+            //    "</DataTemplate>";
+            ////ParserContext pc = new ParserContext();
+            ////pc.XmlnsDictionary.Add("", @"http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            ////pc.XmlnsDictionary.Add("x", @"http://schemas.microsoft.com/winfx/2006/xaml\");
+
+            //var ms = new MemoryStream(Encoding.UTF8.GetBytes(templateString));
+
+            ////var template = (DataTemplate)XamlReader.Load(ms, pc);
+            //var template = (DataTemplate)XamlReader.Load(ms);
+            //tc_menu.ContentTemplate = template;
+        }
+
+        private void TextBlock_GotFocus(object sender, RoutedEventArgs e)
+        {
             string templateString =
                 "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
-                    "<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntity}\">" +
+                    "<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
                         "<ListBox.ItemTemplate>" +
                             "<DataTemplate>" +
                                 "<StackPanel>";
 
-            //List<PropertyInfo> properties = (DataContext as MainWindowViewModel).GenericViewModel.GetType().GetProperties().ToList();
             List<PropertyInfo> properties = (List<PropertyInfo>)((DataContext as MainWindowViewModel).GenericViewModel.GetType().GetMethod("GetTModelProperties").Invoke((DataContext as MainWindowViewModel).GenericViewModel, null));
 
             properties.ForEach(prop => templateString += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>");
@@ -71,16 +123,12 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             //ParserContext pc = new ParserContext();
             //pc.XmlnsDictionary.Add("", @"http://schemas.microsoft.com/winfx/2006/xaml/presentation");
             //pc.XmlnsDictionary.Add("x", @"http://schemas.microsoft.com/winfx/2006/xaml\");
-            //pc.XmlnsDictionary.Add("d", @"http://schemas.microsoft.com/expression/blend/2008\");
-            //pc.XmlnsDictionary.Add("mc", @"http://schemas.openxmlformats.org/markup-compatibility/2006\");
-            //pc.XmlnsDictionary.Add("local", "clr-namespace:Q4NSIQ_HFT_2021221.WpfClient;assembly=\"Q4NSIQ_HFT_2021221\"");
-            //xmlns:local=\"clr-namespace:Q4NSIQ_HFT_2021221.WpfClient\"
 
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(templateString));
+
             //var template = (DataTemplate)XamlReader.Load(ms, pc);
             var template = (DataTemplate)XamlReader.Load(ms);
             tc_menu.ContentTemplate = template;
-            ;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
 {
     public class MainWindowViewModel : ObservableRecipient
     {
-        public MainWindowViewModel Self { get {return this;} private set {} }
+        public MainWindowViewModel Self { get { return this; } private set { } }
         //GenericModel have to use these to not to recreate them all the time from scratch when we change model.
         public RestCollection<Movie> movies;
         public RestCollection<Movie> Movies { get { return this.movies; } set { this.movies = value; } }
@@ -45,7 +45,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         }
         public string[] ClassNames
         {
-            get { return new string[] { "Movie", "MovieHall", "Seats", "Showtime", "Staff", "Ticket" }; }
+            get { return new string[] { "Movie", "MovieHall" }; }//{ "Movie", "MovieHall", "Seats", "Showtime", "Staff", "Ticket" }; }
             private set { }
         }
 

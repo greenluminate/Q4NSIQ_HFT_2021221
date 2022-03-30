@@ -14,12 +14,12 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
     public class GenericViewModel<T> : MainWindowViewModel
     {
         private RestCollection<T> entities;
-        public RestCollection<T> Entities { get { return entities; } set { this.entities = value; OnPropertyChanged(); } }
+        public RestCollection<T> Entities { get { return entities; } set { this.entities = value; } }
 
-        private T selectedEntitiy;
+        private T selectedEntity;
         public T SelectedEntitiy
         {
-            get { return selectedEntitiy; }
+            get { return selectedEntity; }
             set
             {
                 if (value != null)
@@ -28,8 +28,8 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
                     /// It fills the selected entity with copyed values.
                     /// </summary>
                     var properties = GetTModelProperties();
-                    selectedEntitiy = (T)Activator.CreateInstance(typeof(T));
-                    properties.ForEach(prop => prop.SetValue(selectedEntitiy, selectedEntitiy.GetType().GetProperty(prop.Name).GetValue(value)));
+                    selectedEntity = (T)Activator.CreateInstance(typeof(T));
+                    properties.ForEach(prop => prop.SetValue(selectedEntity, selectedEntity.GetType().GetProperty(prop.Name).GetValue(value)));
 
                     OnPropertyChanged();
                     (DeleteCommand as RelayCommand).NotifyCanExecuteChanged();
@@ -58,25 +58,25 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             );
 
             //Maybe it will be necessary to set a selected entity:
-            selectedEntitiy = (T)Entities.GetEnumerator().Current;
+            selectedEntity = (T)Entities.GetEnumerator().Current;
             //selectedEntitiy = (T)Activator.CreateInstance(typeof(T));
         }
 
         private int getReflexId()
         {
-            return (int)selectedEntitiy
+            return (int)selectedEntity
                         .GetType()
                         .GetProperties()
                         .Where(prop => prop.Name.Contains("Id"))
                         .FirstOrDefault()
-                        .GetValue(selectedEntitiy);
+                        .GetValue(selectedEntity);
         }
 
         public void AddEntityToRestColelction()
         {
             T newEntity = (T)Activator.CreateInstance(typeof(T));
             var properties = GetTModelProperties();
-            properties.ForEach(prop => prop.SetValue(newEntity, selectedEntitiy.GetType().GetProperty(prop.Name).GetValue(selectedEntitiy)));
+            properties.ForEach(prop => prop.SetValue(newEntity, selectedEntity.GetType().GetProperty(prop.Name).GetValue(selectedEntity)));
 
             Entities.Add(newEntity);
         }

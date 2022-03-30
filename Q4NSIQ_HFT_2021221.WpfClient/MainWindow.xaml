@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Q4NSIQ_HFT_2021221.WpfClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -19,8 +20,8 @@
         <TabControl Grid.Column="0" x:Name="tc_menu" ItemsSource="{Binding ClassNames, Mode=OneTime}" SelectedItem="{Binding SelectedObjectString, Mode=OneWayToSource}" TabStripPlacement="Left" SelectionChanged="tc_menu_SelectionChanged">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Loaded="StackPanel_Loaded">
-                        <TextBlock Text="{Binding}" Foreground="Blue" FontSize="14" Selector.IsSelected="True" Loaded="TextBlock_Loaded"/>
+                    <StackPanel Orientation="Horizontal" x:Name="stack_menu" Loaded="stack_menu_Loaded">
+                        <TextBlock Text="{Binding}" Foreground="Blue" FontSize="14" Selector.IsSelected="True"/>
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
