@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Models;
+using Microsoft.AspNetCore.SignalR;
+using Q4NSIQ_HFT_2021221.Endpoint.Services;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
@@ -11,8 +13,8 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
     {
         ITicketLogic ticketLogic;
 
-        public TicketController(ITicketLogic ticketLogic)
-        : base(ticketLogic as ILogic<Ticket>)
+        public TicketController(ITicketLogic ticketLogic, IHubContext<SignalRHub> hub)
+        : base(ticketLogic as ILogic<Ticket>, hub)
         {
             this.ticketLogic = ticketLogic;
         }
@@ -31,4 +33,3 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
         }
     }
 }
-

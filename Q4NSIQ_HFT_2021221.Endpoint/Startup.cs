@@ -6,12 +6,12 @@ using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Repository;
 using Q4NSIQ_HFT_2021221.Data;
 using Q4NSIQ_HFT_2021221.Models;
+using Q4NSIQ_HFT_2021221.Endpoint.Services;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint
 {
     public class Startup
     {
-        //POSTMAN invite link: https://app.getpostman.com/join-team?invite_code=0279391ad6191a2a9dd581246b082782
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -53,6 +53,8 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
             #endregion
 
             services.AddTransient<CinemaDbContext, CinemaDbContext>();
+
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -67,6 +69,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SignalRHub>("/hub");
             });
         }
     }

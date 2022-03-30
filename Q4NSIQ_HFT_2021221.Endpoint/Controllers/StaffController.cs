@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Models;
+using Microsoft.AspNetCore.SignalR;
+using Q4NSIQ_HFT_2021221.Endpoint.Services;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
@@ -11,8 +13,8 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
     {
         IStaffLogic staffLogic;
 
-        public StaffController(IStaffLogic staffLogic)
-        : base(staffLogic as ILogic<Staff>)
+        public StaffController(IStaffLogic staffLogic, IHubContext<SignalRHub> hub)
+        : base(staffLogic as ILogic<Staff>, hub)
         {
             this.staffLogic = staffLogic;
         }

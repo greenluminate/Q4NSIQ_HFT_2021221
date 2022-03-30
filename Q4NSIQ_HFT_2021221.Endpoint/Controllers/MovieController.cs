@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Models;
+using Microsoft.AspNetCore.SignalR;
+using Q4NSIQ_HFT_2021221.Endpoint.Services;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
@@ -10,9 +12,8 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
     public class MovieController : GenericController<Movie>
     {
         IMovieLogic movieLogic;
-
-        public MovieController(IMovieLogic movieLogic)
-        : base(movieLogic as ILogic<Movie>)
+        public MovieController(IMovieLogic movieLogic, IHubContext<SignalRHub> hub)
+        : base(movieLogic as ILogic<Movie>, hub)
         {
             this.movieLogic = movieLogic;
         }

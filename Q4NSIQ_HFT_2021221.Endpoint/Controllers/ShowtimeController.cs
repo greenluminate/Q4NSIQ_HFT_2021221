@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Models;
+using Q4NSIQ_HFT_2021221.Endpoint.Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
@@ -12,8 +14,8 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
     {
         IShowtimeLogic showtimeLogic;
 
-        public ShowtimeController(IShowtimeLogic showtimeLogic)
-        : base(showtimeLogic as ILogic<Showtime>)
+        public ShowtimeController(IShowtimeLogic showtimeLogic, IHubContext<SignalRHub> hub)
+        : base(showtimeLogic as ILogic<Showtime>, hub)
         {
             this.showtimeLogic = showtimeLogic;
         }

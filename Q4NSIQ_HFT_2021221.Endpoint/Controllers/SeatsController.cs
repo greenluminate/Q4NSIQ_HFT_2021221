@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Q4NSIQ_HFT_2021221.Logic;
 using Q4NSIQ_HFT_2021221.Models;
+using Microsoft.AspNetCore.SignalR;
+using Q4NSIQ_HFT_2021221.Endpoint.Services;
 
 namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
 {
@@ -11,8 +13,8 @@ namespace Q4NSIQ_HFT_2021221.Endpoint.Controllers
     {
         ISeatsLogic seatsLogic;
 
-        public SeatsController(ISeatsLogic seatsLogic)
-        : base(seatsLogic as ILogic<Seats>)
+        public SeatsController(ISeatsLogic seatsLogic, IHubContext<SignalRHub> hub)
+        : base(seatsLogic as ILogic<Seats>, hub)
         {
             this.seatsLogic = seatsLogic;
         }
