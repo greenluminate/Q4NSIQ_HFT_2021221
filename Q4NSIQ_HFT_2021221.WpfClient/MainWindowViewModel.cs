@@ -1,10 +1,11 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Q4NSIQ_HFT_2021221.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Markup;
 
 namespace Q4NSIQ_HFT_2021221.WpfClient
 {
@@ -43,9 +44,9 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             get { return hub; }
             private set { hub = value; }
         }
-        public string[] ClassNames
+        public List<string> ClassNames
         {
-            get { return new string[] { "Movie", "MovieHall" }; }//{ "Movie", "MovieHall", "Seats", "Showtime", "Staff", "Ticket" }; }
+            get { return new List<string> { "Movie", "MovieHall", "Seats", "Showtime", "Staff", "Ticket" }; }
             private set { }
         }
 
@@ -92,6 +93,8 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             }
         }
 
+        public List<DataTemplate> TabControlContentTemplates { get; set; }
+
         public MainWindowViewModel()
         {
             this.url = "http://localhost:17133/";
@@ -103,6 +106,42 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             showtimes = new RestCollection<Showtime>(Url, null, Hub);
             staffs = new RestCollection<Staff>(Url, null, Hub);
             tickets = new RestCollection<Ticket>(Url, null, Hub);
+
+            TabControlContentTemplates = new List<DataTemplate>();
+            TabControlContentTemplateSetter();
+        }
+
+        private void TabControlContentTemplateSetter()
+        {
+            ClassNames.ForEach(name =>
+            {
+                createGenericViewModel(name);
+                TemplateCreator((List<PropertyInfo>)GenericViewModel.GetType().GetMethod("GetTModelProperties").Invoke(GenericViewModel, null));
+            });
+        }
+
+        private void TemplateCreator(List<PropertyInfo> properties)
+        {//Template in templaet string
+            string templateString =
+                "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
+                    "<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
+                        "<ListBox.ItemTemplate>" +
+                            "<DataTemplate>" +
+                                "<StackPanel>";
+
+            properties.ForEach(prop => templateString += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>");//itt tölteni template in templatet.
+
+            templateString +=
+                                "</StackPanel>" +
+                                //Ide a template in templatet, ha kséz
+                            "</DataTemplate>" +
+                        "</ListBox.ItemTemplate>" +
+                    "</ListBox>" +
+                "</DataTemplate>";
+
+            var ms = new MemoryStream(Encoding.UTF8.GetBytes(templateString));
+
+            TabControlContentTemplates.Add((DataTemplate)XamlReader.Load(ms));
         }
     }
 }

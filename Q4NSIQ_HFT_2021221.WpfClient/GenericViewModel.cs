@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace Q4NSIQ_HFT_2021221.WpfClient
 {
-    public class GenericViewModel<T> : MainWindowViewModel
+    public class GenericViewModel<T> : ObservableRecipient
     {
         private RestCollection<T> entities;
         public RestCollection<T> Entities { get { return entities; } set { this.entities = value; } }
