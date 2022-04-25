@@ -46,7 +46,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         }
 
         private object selectedObjectString;
-        public object SelectedObjectString//Selected Menu -> ELidnTjuk manuálisan mint a parancssorosnál a kieg modellben és kész onna ngenerikus, csak dynamic load kell ,de az amúgy is kell innek küldük a zadatokat a xaml.cs pedig megeszi amit megkap és felépíti a viewt.
+        public object SelectedObjectString
         {
             get
             {
@@ -117,7 +117,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
 
         private void TemplateCreator(List<PropertyInfo> properties)
         {
-            string editorContentStack = "<StackPanel Grid.Column=\"1\">";
+            string editorContentStack = "<ScrollViewer Grid.Column=\"1\"> <StackPanel>";
             string recordTemplate =
                 "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
                     "<Grid>" +
@@ -125,25 +125,26 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
                             "<ColumnDefinition Width=\"1*\"/>" +
                             "<ColumnDefinition Width=\"1*\"/>" +
                         "</Grid.ColumnDefinitions>" +
-                        "<ListBox x:Name=\"lb_records\" Grid.Column=\"0\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
+                        "<ListBox x:Name=\"lb_records\" Grid.Column=\"0\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\" HorizontalContentAlignment=\"Stretch\">" +
                             "<ListBox.ItemTemplate>" +
                                 "<DataTemplate>" +
-                                    "<StackPanel>";
+                                    "<Border BorderBrush=\"Gray\" BorderThickness=\"0,0,0,1\">" +
+                                        "<StackPanel>";
 
             properties.ForEach(prop =>
             {
                 editorContentStack += $"<Label Content=\"{prop.Name}\" Background=\"LightBlue\" Padding=\"10\"/>";
-                editorContentStack += $"<TextBox Text=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.SelectedEntitiy.{prop.Name}}}\" Padding=\"10\" Margin=\"0,0,0,30\"/>";
+                editorContentStack += $"<TextBox Text=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.SelectedEntitiy.{prop.Name}}}\" Padding=\"10\" Margin=\"0,0,0,20\"/>";
                 recordTemplate += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>";
             });
 
             editorContentStack += $"<Button Content=\"Create Movie\" Command=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.CreateCommand}}\" Margin=\"10\" Padding=\"10\"/>";
             editorContentStack += $"<Button Content=\"Delete Movie\" Command=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.DeleteCommand}}\" Margin=\"10\" Padding=\"10\"/>";
             editorContentStack += $"<Button Content=\"Update Movie\" Command=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.UpdateCommand}}\" Margin=\"10\" Padding=\"10\"/>";
-            editorContentStack += "</StackPanel>";
+            editorContentStack += "</StackPanel> </ScrollViewer>";
 
-            recordTemplate +=
-                                        "</StackPanel>" +
+            recordTemplate += "</StackPanel>" +
+                                        "</Border>" +
                                     "</DataTemplate>" +
                                 "</ListBox.ItemTemplate>" +
                             "</ListBox>" +
