@@ -78,7 +78,10 @@ function create() {
     let ageRestriction = document.getElementById('ageRestriction').value;
     let durationTime = document.getElementById('durationTime').value;
     let languages = document.getElementById('languages').value;
-    let rating = document.getElementById('rating').value;
+    let rating = document.getElementById('rating').value == "" ? null : document.getElementById('rating').value;
+
+    let minutes = (durationTime.split(':')[0] * 60) + (durationTime.split(':')[1] * 1);
+    let ticks = minutes * 10000000 * 60;
 
     fetch('http://localhost:17133/movie', {
         method: 'POST',
@@ -87,8 +90,7 @@ function create() {
             movieTitle: movieTitle,
             category: category,
             ageRestriction: ageRestriction,
-            //durationTicks: durationTime * 3600000,
-            durationTicks: 52200000000,
+            durationTicks: ticks,
             languages: languages,
             rating: rating
         }),
