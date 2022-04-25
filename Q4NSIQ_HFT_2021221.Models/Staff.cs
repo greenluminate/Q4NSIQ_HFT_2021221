@@ -50,7 +50,7 @@ namespace Q4NSIQ_HFT_2021221.Models
                    Name.Length * 2 +
                    (Gender is null ? 0 : Gender.Length) +
                    IC[3] * 23 +
-                   MobileNumber[9] * 11;
+                   (MobileNumber is null ? 5 * 11 : MobileNumber[9] * 11);
         }
     }
 }

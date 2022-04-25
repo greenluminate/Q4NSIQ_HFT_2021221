@@ -15,14 +15,21 @@ namespace Q4NSIQ_HFT_2021221.Data
 
         public CinemaDbContext()
         {
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
         }
 
+        //~CinemaDbContext()
+        //{
+        //    this.Database.EnsureDeleted();
+        //}
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
+
             if (!builder.IsConfigured)
             {
-                string conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\CinemaDB.mdf;Integrated Security=True";
+                string conn = @"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;Initial Catalog=CinemaDB.mdf;AttachDbFilename=|DataDirectory|\CinemaDB.mdf;";//Initial Catalog=|DataDirectory|\CinemaDB.mdf
                 builder.UseLazyLoadingProxies()
                        .UseSqlServer(conn);
             }

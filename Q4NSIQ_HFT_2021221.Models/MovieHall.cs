@@ -44,7 +44,7 @@ namespace Q4NSIQ_HFT_2021221.Models
         {
             return MovieHallId * 59 +
                    NumberOfSeats * 5 +
-                   (HallCategory is null ? HallCategory.Length * 2 : 0);
+                   (HallCategory != null ? HallCategory.Length * 2 : 0);
         }
     }
 }

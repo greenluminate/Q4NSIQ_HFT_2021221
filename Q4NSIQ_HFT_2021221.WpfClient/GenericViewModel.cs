@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -53,13 +54,16 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             () => { return SelectedEntitiy != null; }
             );
             DeleteCommand = new RelayCommand(
-            () => { Entities.Delete(getReflexId()); OnPropertyChanged(); },
+            () =>
+            {
+                Entities.Delete(getReflexId());
+                OnPropertyChanged();
+                //Entities.Update(SelectedEntitiy = (T)Entities.GetEnumerator().Current);
+            },
             () => { return SelectedEntitiy != null; }
             );
 
-            //Maybe it will be necessary to set a selected entity:
             selectedEntity = (T)Entities.GetEnumerator().Current;
-            //selectedEntitiy = (T)Activator.CreateInstance(typeof(T));
         }
 
         private int getReflexId()
@@ -76,7 +80,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         {
             T newEntity = (T)Activator.CreateInstance(typeof(T));
             var properties = GetTModelProperties();
-            properties.ForEach(prop => prop.SetValue(newEntity, selectedEntity.GetType().GetProperty(prop.Name).GetValue(selectedEntity)));
+            properties.ForEach(prop => prop.SetValue(newEntity, !prop.Name.Contains("Id") ? selectedEntity.GetType().GetProperty(prop.Name).GetValue(selectedEntity) : null));
 
             Entities.Add(newEntity);
         }

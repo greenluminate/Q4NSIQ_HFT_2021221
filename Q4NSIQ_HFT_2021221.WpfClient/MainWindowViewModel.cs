@@ -121,25 +121,41 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         }
 
         private void TemplateCreator(List<PropertyInfo> properties)
-        {//Template in templaet string
-            string templateString =
+        {
+            string editorContentStack = "<StackPanel Grid.Column=\"1\">";
+            string recordTemplate =
                 "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
-                    "<ListBox x:Name=\"lb_records\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
-                        "<ListBox.ItemTemplate>" +
-                            "<DataTemplate>" +
-                                "<StackPanel>";
+                    "<Grid>" +
+                        "<Grid.ColumnDefinitions>" +
+                            "<ColumnDefinition Width=\"1*\"/>" +
+                            "<ColumnDefinition Width=\"1*\"/>" +
+                        "</Grid.ColumnDefinitions>" +
+                        "<ListBox x:Name=\"lb_records\" Grid.Column=\"0\" ItemsSource=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.Entities }\" SelectedItem=\"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.GenericViewModel.SelectedEntitiy}\">" +
+                            "<ListBox.ItemTemplate>" +
+                                "<DataTemplate>" +
+                                    "<StackPanel>";
 
-            properties.ForEach(prop => templateString += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>");//itt tölteni template in templatet.
+            properties.ForEach(prop => {
+                editorContentStack += $"<Label Content=\"{prop.Name}\" Background=\"LightBlue\" Padding=\"10\"/>";
+                editorContentStack += $"<TextBox Text=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.SelectedEntitiy.{prop.Name}}}\" Padding=\"10\" Margin=\"0,0,0,30\"/>";
+                recordTemplate += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>";
+            });
 
-            templateString +=
-                                "</StackPanel>" +
-                                //Ide a template in templatet, ha kséz
-                            "</DataTemplate>" +
-                        "</ListBox.ItemTemplate>" +
-                    "</ListBox>" +
+            editorContentStack += $"<Button Content=\"Create Movie\" Command=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.CreateCommand}}\" Margin=\"10\" Padding=\"10\"/>";
+            editorContentStack += $"<Button Content=\"Delete Movie\" Command=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.DeleteCommand}}\" Margin=\"10\" Padding=\"10\"/>";
+            editorContentStack += $"<Button Content=\"Update Movie\" Command=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.UpdateCommand}}\" Margin=\"10\" Padding=\"10\"/>";
+            editorContentStack += "</StackPanel>";
+
+            recordTemplate +=
+                                        "</StackPanel>" +
+                                    "</DataTemplate>" +
+                                "</ListBox.ItemTemplate>" +
+                            "</ListBox>" +
+                        $"{editorContentStack}" +
+                    "</Grid>" +
                 "</DataTemplate>";
 
-            var ms = new MemoryStream(Encoding.UTF8.GetBytes(templateString));
+            var ms = new MemoryStream(Encoding.UTF8.GetBytes(recordTemplate));
 
             TabControlContentTemplates.Add((DataTemplate)XamlReader.Load(ms));
         }
