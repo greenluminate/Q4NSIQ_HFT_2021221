@@ -43,7 +43,7 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public GenericViewModel(ref RestCollection<T> entities, string url, string hub)
+        public GenericViewModel(RestCollection<T> entities, string url, string hub)
         {
             this.Entities = entities;
 

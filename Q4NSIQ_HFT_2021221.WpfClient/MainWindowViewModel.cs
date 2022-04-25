@@ -12,24 +12,19 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
     public class MainWindowViewModel : ObservableRecipient
     {
         public MainWindowViewModel Self { get { return this; } private set { } }
+
         //GenericModel have to use these to not to recreate them all the time from scratch when we change model.
-        public RestCollection<Movie> movies;
-        public RestCollection<Movie> Movies { get { return this.movies; } set { this.movies = value; } }
+        public RestCollection<Movie> Movies;
 
-        public RestCollection<MovieHall> movieHalls;
-        public RestCollection<MovieHall> MovieHalls { get { return this.movieHalls; } set { this.movieHalls = value; } }
+        public RestCollection<MovieHall> MovieHalls;
 
-        public RestCollection<Seats> seats;
-        public RestCollection<Seats> Seats { get { return this.seats; } set { this.seats = value; } }
+        public RestCollection<Seats> Seats;
 
-        public RestCollection<Showtime> showtimes;
-        public RestCollection<Showtime> Showtimes { get { return this.showtimes; } set { this.showtimes = value; } }
+        public RestCollection<Showtime> Showtimes;
 
-        public RestCollection<Staff> staffs;
-        public RestCollection<Staff> Staffs { get { return this.staffs; } set { this.staffs = value; } }
+        public RestCollection<Staff> Staffs;
 
-        public RestCollection<Ticket> tickets;
-        public RestCollection<Ticket> Tickets { get { return this.tickets; } set { this.tickets = value; } }
+        public RestCollection<Ticket> Tickets;
 
         private string url;
         public string Url
@@ -73,22 +68,22 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             switch (menuObj as string)
             {
                 case "Movie":
-                    GenericViewModel = new GenericViewModel<Movie>(ref movies, this.url, this.hub);
+                    GenericViewModel = new GenericViewModel<Movie>(Movies, this.url, this.hub);
                     break;
                 case "MovieHall":
-                    GenericViewModel = new GenericViewModel<MovieHall>(ref movieHalls, this.url, this.hub);
+                    GenericViewModel = new GenericViewModel<MovieHall>(MovieHalls, this.url, this.hub);
                     break;
                 case "Seats":
-                    GenericViewModel = new GenericViewModel<Seats>(ref seats, this.url, this.hub);
+                    GenericViewModel = new GenericViewModel<Seats>(Seats, this.url, this.hub);
                     break;
                 case "Showtime":
-                    GenericViewModel = new GenericViewModel<Showtime>(ref showtimes, this.url, this.hub);
+                    GenericViewModel = new GenericViewModel<Showtime>(Showtimes, this.url, this.hub);
                     break;
                 case "Staff":
-                    GenericViewModel = new GenericViewModel<Staff>(ref staffs, this.url, this.hub);
+                    GenericViewModel = new GenericViewModel<Staff>(Staffs, this.url, this.hub);
                     break;
                 case "Ticket":
-                    GenericViewModel = new GenericViewModel<Ticket>(ref tickets, this.url, this.hub);
+                    GenericViewModel = new GenericViewModel<Ticket>(Tickets, this.url, this.hub);
                     break;
             }
         }
@@ -100,12 +95,12 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
             this.url = "http://localhost:17133/";
             this.hub = "hub";
 
-            movies = new RestCollection<Movie>(Url, null, Hub);
-            movieHalls = new RestCollection<MovieHall>(Url, null, Hub);
-            seats = new RestCollection<Seats>(Url, null, Hub);
-            showtimes = new RestCollection<Showtime>(Url, null, Hub);
-            staffs = new RestCollection<Staff>(Url, null, Hub);
-            tickets = new RestCollection<Ticket>(Url, null, Hub);
+            Movies = new RestCollection<Movie>(Url, null, Hub);
+            MovieHalls = new RestCollection<MovieHall>(Url, null, Hub);
+            Seats = new RestCollection<Seats>(Url, null, Hub);
+            Showtimes = new RestCollection<Showtime>(Url, null, Hub);
+            Staffs = new RestCollection<Staff>(Url, null, Hub);
+            Tickets = new RestCollection<Ticket>(Url, null, Hub);
 
             TabControlContentTemplates = new List<DataTemplate>();
             TabControlContentTemplateSetter();
@@ -135,7 +130,8 @@ namespace Q4NSIQ_HFT_2021221.WpfClient
                                 "<DataTemplate>" +
                                     "<StackPanel>";
 
-            properties.ForEach(prop => {
+            properties.ForEach(prop =>
+            {
                 editorContentStack += $"<Label Content=\"{prop.Name}\" Background=\"LightBlue\" Padding=\"10\"/>";
                 editorContentStack += $"<TextBox Text=\"{{Binding RelativeSource={{RelativeSource FindAncestor, AncestorType={{x:Type Window}}}}, Path=DataContext.GenericViewModel.SelectedEntitiy.{prop.Name}}}\" Padding=\"10\" Margin=\"0,0,0,30\"/>";
                 recordTemplate += $"<Label Content=\"{{Binding { prop.Name }}}\"></Label>";
