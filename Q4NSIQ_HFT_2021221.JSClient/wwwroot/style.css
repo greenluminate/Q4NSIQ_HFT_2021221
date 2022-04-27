@@ -21,15 +21,30 @@ th {
     margin-bottom: 20px;
 }
 
-#form_div label, button, input {
+#form_div, label, button, input {
     margin: 10px;
     padding: 7px;
 }
 
-#form_div label {
+#form_div, label {
     font-weight: bolder;
 }
 
-table button{
+#update_form_div {
+    display: none;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#update_form_div, label, button, input {
+    margin: 10px;
+    padding: 7px;
+}
+
+#update_form_div, label {
+    font-weight: bolder;
+}
+
+table button {
     padding: 2px;
 }
