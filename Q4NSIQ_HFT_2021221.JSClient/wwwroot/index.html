@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Movie UI</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>Movie Catalog</h1>
+    <div id="form_div">
+        <label>Movie Title</label>
+        <input type="text" id="movieTitle" required />
+
+        <label>Category</label>
+        <input type="text" id="category" required />
+
+        <label>Age Restriction</label>
+        <input type="number" id="ageRestriction" max="18" min="0" />
+
+        <label>Duration HH:MM</label>
+        <input type="time" id="durationTime" required />
+
+        <label>Languages</label>
+        <input type="text" id="languages" required />
+
+        <label>Rating</label>
+        <input type="number" id="rating" min="1" max="5" />
+
+        <button type="button" onclick="create()">Add Movie</button>
+    </div>
+
+    <div id="update_form_div">
+        <label>Movie Title</label>
+        <input type="text" id="movieTitleUpdate" required />
+
+        <label>Category</label>
+        <input type="text" id="categoryUpdate" required />
+
+        <label>Age Restriction</label>
+        <input type="number" id="ageRestrictionUpdate" max="18" min="0" />
+
+        <label>Duration HH:MM</label>
+        <input type="time" id="durationTimeUpdate" required />
+
+        <label>Languages</label>
+        <input type="text" id="languagesUpdate" required />
+
+        <label>Rating</label>
+        <input type="number" id="ratingUpdate" min="1" max="5" />
+
+        <button type="button" onclick="update()">Update Movie</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Movie Title</th>
+                <th>Category</th>
+                <th>Age Restriction</th>
+                <th>Duration Ticks</th>
+                <th>Languages</th>
+                <th>Rating</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="resultarea">
+        </tbody>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

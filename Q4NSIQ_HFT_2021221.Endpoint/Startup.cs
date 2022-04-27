@@ -64,6 +64,14 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x => x
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("http://localhost:7172"));
+
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -71,6 +79,7 @@ namespace Q4NSIQ_HFT_2021221.Endpoint
                 endpoints.MapControllers();
                 endpoints.MapHub<SignalRHub>("/hub");
             });
+
         }
     }
 }
